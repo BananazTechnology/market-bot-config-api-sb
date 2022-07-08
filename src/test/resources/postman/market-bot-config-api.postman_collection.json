@@ -1,0 +1,324 @@
+{
+	"info": {
+		"_postman_id": "22cc6fc1-f876-4b30-9c86-4fe4df59c307",
+		"name": "market-bot-config-api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12123191"
+	},
+	"item": [
+		{
+			"name": "/listings",
+			"item": [
+				{
+					"name": "GET /listings",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/listings",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"listings"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /listings?showAll=true",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/listings?showAll=true",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"listings"
+							],
+							"query": [
+								{
+									"key": "showAll",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST /listings",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Get new ID\", function () {",
+									"    var response = pm.response.json();",
+									"    pm.environment.set(\"listingsId\", response.id);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"contractAddress\": \"0x2acAb3DEa77832C09420663b0E1cB386031bA17B\",\n    \"interval\": 30000\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/listings",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"listings"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /listings/{id}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/listings/{{listingsId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"listings",
+								"{{listingsId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PATCH /listings/{id}",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"rolePings\": true,\n    \"showAll\": false,\n    \"twitterHashtags\": \"HI,test,Foo,PoO\",\n    \"active\": false\n} ",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/listings/{{listingsId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"listings",
+								"{{listingsId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE /listings/{id}",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/listings/{{listingsId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"listings",
+								"{{listingsId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "/sales",
+			"item": [
+				{
+					"name": "GET /sales",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/sales",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"sales"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /sales?showAll=true",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/sales?showAll=true",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"sales"
+							],
+							"query": [
+								{
+									"key": "showAll",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST /sales",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Get new ID\", function () {",
+									"    var response = pm.response.json();",
+									"    pm.environment.set(\"listingsId\", response.id);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"contractAddress\": \"0x2acAb3DEa77832C09420663b0E1cB386031bA17B\",\n    \"interval\": 30000\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/sales",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"sales"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /sales/{id}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/sales/{{listingsId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"sales",
+								"{{listingsId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PATCH /sales/{id}",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"rolePings\": true,\n    \"showAll\": false,\n    \"twitterHashtags\": \"HI,test,Foo,PoO\"\n} ",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/sales/{{listingsId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"sales",
+								"{{listingsId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE /sales/{id}",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/sales/{{listingsId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"sales",
+								"{{listingsId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
