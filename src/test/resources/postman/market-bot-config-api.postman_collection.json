@@ -79,7 +79,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"contractAddress\": \"0x2acAb3DEa77832C09420663b0E1cB386031bA17B\",\n    \"interval\": 30000\n}",
+							"raw": "{\n    \"contractAddress\": \"0x2acAb3DEa77832C09420663b0E1cB386031bA17B\",\n    \"interval\": 10000,\n    \"discordToken\": \"ODg1MzE2NjE1MjEyNzY5Mjgx.YTlRWQ.Wz4efIUN3RX-_D1RlczaDJDIJQk\",\n    \"discordChannelId\": \"991140832952463440\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -313,6 +313,53 @@
 							"path": [
 								"sales",
 								"{{listingsId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "/events",
+			"item": [
+				{
+					"name": "GET /events/listings",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/events/listings",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"events",
+								"listings"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /events/listings?showAll=true",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/events/listings?showAll=true",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"events",
+								"listings"
+							],
+							"query": [
+								{
+									"key": "showAll",
+									"value": "true"
+								}
 							]
 						}
 					},

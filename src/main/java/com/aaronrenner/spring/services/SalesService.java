@@ -39,7 +39,6 @@ public class SalesService {
 		if(isNull(sale.getExcludeOpensea()))   	 sale.setExcludeOpensea(false);
 		if(isNull(sale.getShowBundles())) 	  	 sale.setShowBundles(true);
 		if(isNull(sale.getBurnWatcher())) 	  	 sale.setBurnWatcher(false);
-		if(isNull(sale.getBearWatcher())) 	  	 sale.setBearWatcher(false);
 		if(isNull(sale.getMintWatcher())) 	  	 sale.setMintWatcher(false);
 		// Validate Access
 		if(nonNull(sale.getDiscordToken()) && nonNull(sale.getDiscordChannelId()))
@@ -93,7 +92,6 @@ public class SalesService {
 		if(nonNull(sale.getExcludeLooksrare())) 		existingConf.setExcludeLooksrare(sale.getExcludeLooksrare());
 		if(nonNull(sale.getExcludeOpensea()))   		existingConf.setExcludeOpensea(sale.getExcludeOpensea());
 		if(nonNull(sale.getBurnWatcher())) 	  			existingConf.setBurnWatcher(sale.getBurnWatcher());
-		if(nonNull(sale.getBearWatcher())) 	  			existingConf.setBearWatcher(sale.getBearWatcher());
 		if(nonNull(sale.getMintWatcher())) 	  			existingConf.setMintWatcher(sale.getMintWatcher());
 		if(nonNull(sale.getLastOpenseaId()))			existingConf.setLastOpenseaId(sale.getLastOpenseaId());
 		if(nonNull(sale.getLastLooksId()))			    existingConf.setLastLooksId(sale.getLastLooksId());

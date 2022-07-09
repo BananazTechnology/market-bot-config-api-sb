@@ -1,0 +1,403 @@
+openapi: 3.0.0
+servers:
+  - description: Dev
+    url: https://proxy.aar.dev/api/configs
+info:
+  description: >-
+    API built on @spring-projects used for controlling MarketBotConfigs for
+    Listings/Sales
+  version: 1.0.0-oas3
+  title: market-bot-config-api
+security:
+  - ApiKeyAuth: []
+
+paths:
+  #
+  # Listing Configs
+  #
+  /listings:
+    post:
+      summary: Creates listings
+      description: |
+        Creates a new listing contract for the listing producer to query
+      responses:
+        '201':
+          description: |
+            The object was created and is now being watched.
+        '400':
+          description: |
+            Please check the request body for errors.
+        '401':
+          description: |
+            In this occasion please do check the apikey header/query parameter.
+      requestBody:
+        description: The new contract to watch.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/listingItem'
+    get:
+      summary: Gets all listings
+      description: |
+        Gets all listing objects in the db.
+      parameters:
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/showAll'
+      responses:
+        '200':
+          description: |
+            A JSON array of all listings.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/listingItem'
+        '401':
+          description: |
+            In this occasion please do check the apikey header/query parameter.
+  /listings/{id}:
+    get:
+      summary: Gets a listing by id
+      description: |
+        Gets a listing object by id.
+      parameters:
+        - $ref: '#/components/parameters/itemId'
+      responses:
+        '200':
+          description: |
+            A JSON object of the listing.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/listingItem'
+        '401':
+          description: |
+            In this occasion please do check the apikey header/query parameter.
+        '404':
+          description: |
+            The listing was not found.
+    patch:
+      summary: Updates a listing by id
+      description: |
+        Updates only the items provided in the body, any items provided will take immediate effect on the servers.
+      parameters:
+        - $ref: '#/components/parameters/itemId'
+      requestBody:
+        description: The new contract to watch.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/listingItem'
+      responses:
+        '200':
+          description: |
+            The object was updated.
+        '400':
+          description: |
+            Please check the request body for errors.
+        '401':
+          description: |
+            In this occasion please do check the apikey header/query parameter.
+        '404':
+          description: |
+            The listing was not found.
+
+  #
+  # Sales Configs
+  #
+  /sales:
+    post:
+      summary: Creates sales
+      description: |
+        Creates a new sale contract for the sale producer to query
+      responses:
+        '201':
+          description: |
+            The object was created and is now being watched.
+        '400':
+          description: |
+            Please check the request body for errors.
+        '401':
+          description: |
+            In this occasion please do check the apikey header/query parameter.
+      requestBody:
+        description: The new contract to watch.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/saleItem'
+    get:
+      summary: Gets all sales
+      description: |
+        Gets all sale objects in the db.
+      parameters:
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/showAll'
+      responses:
+        '200':
+          description: |
+            A JSON array of all sales.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/saleItem'
+        '401':
+          description: |
+            In this occasion please do check the apikey header/query parameter.
+  /sales/{id}:
+    get:
+      summary: Gets a sale by id
+      description: |
+        Gets a sale object by id.
+      parameters:
+        - $ref: '#/components/parameters/itemId'
+      responses:
+        '200':
+          description: |
+            A JSON object of the sale.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/saleItem'
+        '401':
+          description: |
+            In this occasion please do check the apikey header/query parameter.
+        '404':
+          description: |
+            The sale was not found.
+    patch:
+      summary: Updates a sale by id
+      description: |
+        Updates only the items provided in the body, any items provided will take immediate effect on the servers.
+      parameters:
+        - $ref: '#/components/parameters/itemId'
+      requestBody:
+        description: The new contract to watch.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/saleItem'
+      responses:
+        '200':
+          description: |
+            The object was updated.
+        '400':
+          description: |
+            Please check the request body for errors.
+        '401':
+          description: |
+            In this occasion please do check the apikey header/query parameter.
+        '404':
+          description: |
+            The sale was not found.
+
+  #
+  # Events
+  #
+  /events/listings:
+    get:
+      summary: Gets all listing events
+      description: |
+        Gets all listing events in the db.
+      parameters:
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/showAll'
+      responses:
+        '200':
+          description: |
+            A JSON array of all listing events.
+        '401':
+          description: |
+            In this occasion please do check the apikey header/query parameter.
+  /events/sales:
+    get:
+      summary: Gets all sale events
+      description: |
+        Gets all sale events in the db.
+      parameters:
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/showAll'
+      responses:
+        '200':
+          description: |
+            A JSON array of all sale events.
+        '401':
+          description: |
+            In this occasion please do check the apikey header/query parameter.
+
+components:
+  schemas:
+    saleItem:
+      type: object
+      required:
+        - contractAddress
+        - interval
+      properties:
+        id:
+          type: number
+        contractAddress:
+          type: string
+        interval:
+          type: number
+        discordMessageColor:
+          type: number
+        discordServerId:
+          type: string
+        discordChannelId:
+          type: string
+        discordToken:
+          type: string
+        twitterApiKey:
+          type: string
+        twitterApiKeySecret:
+          type: string
+        twitterAccessToken:
+          type: string
+        twitterAccessTokenSecret:
+          type: string
+        burnWatcher:
+          type: boolean
+          default: false
+        mintWatcher:
+          type: boolean
+          default: false
+        showBundles:
+          type: boolean
+          default: true
+        autoRarity:
+          type: boolean
+          default: false
+        rarityEngine:
+          type: string
+        raritySlugOverwrite:
+          type: string
+        excludeOpensea:
+          type: boolean
+          default: false
+        excludeLooksrare:
+          type: boolean
+          default: false
+        excludeDiscord:
+          type: boolean
+          default: false
+        excludeTwitter:
+          type: boolean
+          default: false
+        contractIsSlug:
+          type: boolean
+          default: false
+        solanaOnOpensea:
+          type: boolean
+          default: false
+        lastLooksId:
+          type: number
+        lastOpenseaId:
+          type: number
+        active:
+          type: boolean
+          default: true
+    listingItem:
+      type: object
+      required:
+        - contractAddress
+        - interval
+      properties:
+        id:
+          type: number
+        contractAddress:
+          type: string
+        interval:
+          type: number
+        discordMessageColor:
+          type: number
+        discordServerId:
+          type: string
+        discordChannelId:
+          type: string
+        discordToken:
+          type: string
+        twitterApiKey:
+          type: string
+        twitterApiKeySecret:
+          type: string
+        twitterAccessToken:
+          type: string
+        twitterAccessTokenSecret:
+          type: string
+        showBundles:
+          type: boolean
+          default: true
+        autoRarity:
+          type: boolean
+          default: false
+        rarityEngine:
+          type: string
+        raritySlugOverwrite:
+          type: string
+        excludeOpensea:
+          type: boolean
+          default: false
+        excludeLooksrare:
+          type: boolean
+          default: false
+        excludeDiscord:
+          type: boolean
+          default: false
+        excludeTwitter:
+          type: boolean
+          default: false
+        contractIsSlug:
+          type: boolean
+          default: false
+        solanaOnOpensea:
+          type: boolean
+          default: false
+        lastLooksId:
+          type: number
+        lastOpenseaId:
+          type: number
+        active:
+          type: boolean
+          default: true
+  parameters:
+    itemId:
+      name: id
+      in: path
+      description: The id of the listing to get.
+      required: true
+      schema:
+        type: string
+    page:
+      name: page
+      in: query
+      description: The page of the listing to get.
+      required: false
+      schema:
+        type: number
+    limit:
+      name: limit
+      in: query
+      description: The limit of the listing to get.
+      required: false
+      schema:
+        type: number
+    showAll:
+      name: showAll
+      in: query
+      description: Whether to show all listings or not.
+      required: false
+      schema:
+        type: boolean
+        default: false
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: apikey
