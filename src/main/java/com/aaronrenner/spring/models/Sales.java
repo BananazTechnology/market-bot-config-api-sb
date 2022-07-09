@@ -31,8 +31,6 @@ public class Sales {
 	@Column(nullable = false, columnDefinition="TINYINT(1) UNSIGNED DEFAULT 0")
 	private Boolean mintWatcher;
 	@Column(nullable = false, columnDefinition="TINYINT(1) UNSIGNED DEFAULT 0")
-	private Boolean bearWatcher;
-	@Column(nullable = false, columnDefinition="TINYINT(1) UNSIGNED DEFAULT 0")
 	private Boolean showBundles;
 	@Column(nullable = false, columnDefinition="TINYINT(1) UNSIGNED DEFAULT 0")
 	private Boolean autoRarity;

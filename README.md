@@ -1,3 +1,4 @@
+[![SOFT](https://github.com/BananazTechnology/market-bot-config-api-sb/actions/workflows/SOFT.yml/badge.svg)](https://github.com/BananazTechnology/market-bot-config-api-sb/actions/workflows/SOFT.yml) [![RELEASE](https://github.com/BananazTechnology/market-bot-config-api-sb/actions/workflows/RELEASE.yml/badge.svg?branch=main)](https://github.com/BananazTechnology/market-bot-config-api-sb/actions/workflows/RELEASE.yml)
 ### market-bot-config-api-sb
 * Version: 1.0.0
 * Most up to date implementation will be found in branch `develop`.
@@ -8,7 +9,7 @@
 This RESTful API provides config resourced used to control our market bots.
 
 ### Documentation
-* For endpoint examples see postman collection below
+* OpenAPI Specification available at [swagger.io](https://app.swaggerhub.com/apis/bananaz-tech-2/market-bot-config-api/1.0.0-oas3)
 * Postman collection and environment variables in `src/test/resources/postman`
 
 ### Getting Started
