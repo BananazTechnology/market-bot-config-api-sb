@@ -34,6 +34,7 @@ public class ListingEvent {
 	private int	   quantity;
 	private String sellerWalletAddy;
 	private String sellerName;
+	private String sellerUrl;
 	private String displayNameOutput;
 	private String rarity;
 	private String rarityRedirect;
