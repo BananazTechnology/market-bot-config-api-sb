@@ -34,12 +34,14 @@ public class ListingEvent {
 	@Column(columnDefinition = "VARCHAR(50)")
 	private String     slug;
 	private String     imageUrl;
+	@Column(columnDefinition = "VARCHAR(127)")
 	private String     permalink;
 	private int	       quantity;
 	@Column(columnDefinition = "VARCHAR(50)")
 	private String     sellerWalletAddy;
 	@Column(columnDefinition = "VARCHAR(50)")
 	private String     sellerName;
+	@Column(columnDefinition = "VARCHAR(127)")
 	private String     sellerUrl;
 	@Column(columnDefinition = "VARCHAR(50)")
 	private String     displayNameOutput;
