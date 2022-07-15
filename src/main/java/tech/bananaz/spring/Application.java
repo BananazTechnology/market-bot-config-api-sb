@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-
 import tech.bananaz.spring.Application;
 
 @SpringBootApplication
@@ -36,10 +35,11 @@ public class Application {
 	}
 	
 	@Bean
-	public boolean logBuildInfo(@Value("${app.version:unknown}") String version) {
+	public boolean logBuildInfo(@Value("${info.name:unknown}") String name, @Value("${info.version:unknown}") String version) {
 		LOGGER.info("--------");
-		LOGGER.info("BUILD_INFO=[version={}]",version);
+		LOGGER.info("BUILD_INFO=[name={}, version={}]",name, version);
 		LOGGER.info("--------");
 		return true;
 	}
+
 }

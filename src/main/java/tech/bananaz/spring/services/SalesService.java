@@ -3,16 +3,13 @@ package tech.bananaz.spring.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import tech.bananaz.spring.discord.DiscordBot;
 import tech.bananaz.spring.exceptions.ResourceNotFoundException;
 import tech.bananaz.spring.models.Sales;
 import tech.bananaz.spring.repositories.SalesConfigPagingRepository;
 import tech.bananaz.spring.repositories.SalesConfigRepository;
-
 import java.net.URI;
 import javax.servlet.http.HttpServletRequest;
 import static java.util.Objects.isNull;
@@ -29,7 +26,7 @@ public class SalesService {
 	private final String salesNotFoundException = "Sales with the value %s was not found";
 	
 	@Transactional
-	public ResponseEntity<Sales> createSales(HttpServletRequest request, Sales sale) {
+	public URI createSales(HttpServletRequest request, Sales sale) {
 		// Set defaults
 		if(isNull(sale.getActive())) 		  	 sale.setActive(true);
 		if(isNull(sale.getAutoRarity())) 	  	 sale.setAutoRarity(false);
@@ -47,31 +44,28 @@ public class SalesService {
 		// Run function
 		Sales newConf = salesRepository.save(sale);
 		// Build response
-		return ResponseEntity
-				.created(URI.create(request.getRequestURL()+"/"+newConf.getId().toString()))
-				.body(newConf);
+		return URI.create(request.getRequestURL()+"/"+newConf.getId().toString());
 	}
 	
 	@Transactional
-	public ResponseEntity<?> readAllSales(int page, int limit, Boolean showAll) {
+	public Object readAllSales(int page, int limit, Boolean showAll) {
 		// If asking for the older way of showing all
-		if(showAll) return ResponseEntity.ok(salesRepository.findAll());
+		if(showAll) return salesRepository.findAll();
 		// Everything else paging
 		Pageable where = PageRequest.of(page, limit);
-		return ResponseEntity.ok(salePagingRepository.findAll(where));
+		return salePagingRepository.findAll(where);
 	}
 	
 	@Transactional
-	public ResponseEntity<Sales> readSales(long salesId) {
+	public Sales readSales(long salesId) {
 		// Ensure exists or throw error
 		checkSalesExists(salesId);
 		// Build response
-		return ResponseEntity.ok(
-				salesRepository.findById(salesId).get());
+		return salesRepository.findById(salesId).get();
 	}
 	
 	@Transactional
-	public ResponseEntity<String> updateSales(long salesId, Sales sale) {
+	public void updateSales(long salesId, Sales sale) {
 		// Ensure exists or throw error
 		checkSalesExists(salesId);
 		// Get existing
@@ -102,18 +96,14 @@ public class SalesService {
 			new DiscordBot(existingConf.getDiscordToken(), existingConf.getDiscordChannelId());
 		// Save
 		salesRepository.save(existingConf);
-		// Build response
-		return ResponseEntity.noContent().build();
 	}
 	
 	@Transactional
-	public ResponseEntity<String> deleteSales(long salesId) {
+	public void deleteSales(long salesId) {
 		// Ensure exists or throw error
 		checkSalesExists(salesId);
 		// Delete
 		salesRepository.deleteById(salesId);
-		// Build response
-		return ResponseEntity.noContent().build();
 	}
 	
 	/*

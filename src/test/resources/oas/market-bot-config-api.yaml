@@ -203,7 +203,7 @@ paths:
     get:
       summary: Gets all listing events
       description: |
-        Gets all listing events in the db.
+        Gets all listing events in the database. Always returns events sorted by createdDate descending from the db, the most recently acquired item shows first.
       parameters:
         - $ref: '#/components/parameters/limit'
         - $ref: '#/components/parameters/page'
@@ -211,7 +211,7 @@ paths:
       responses:
         '200':
           description: |
-            A JSON array of all listing events.
+            A JSON array of all listing events. Always returns events sorted by createdDate descending from the db, the most recently acquired item shows first.
         '401':
           description: |
             In this occasion please do check the apikey header/query parameter.
@@ -219,7 +219,7 @@ paths:
     get:
       summary: Gets all sale events
       description: |
-        Gets all sale events in the db.
+        Gets all sale events in the database. Always returns events sorted by createdDate descending from the db, the most recently acquired item shows first.
       parameters:
         - $ref: '#/components/parameters/limit'
         - $ref: '#/components/parameters/page'
@@ -227,7 +227,7 @@ paths:
       responses:
         '200':
           description: |
-            A JSON array of all sale events.
+            A JSON array of all sale events. Always returns events sorted by createdDate descending from the db, the most recently acquired item shows first.
         '401':
           description: |
             In this occasion please do check the apikey header/query parameter.

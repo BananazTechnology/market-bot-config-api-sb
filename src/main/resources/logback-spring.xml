@@ -8,7 +8,7 @@
       <File>/tmp/runtimeLog.log</File>
    </appender>
    
-   <logger name="tech.bananaz" level="DEBUG" />
+   <logger name="tech.bananaz" level="INFO" />
    <root level="INFO">
    	  <appender-ref ref="FILE" />
    </root>

@@ -3,6 +3,7 @@ package tech.bananaz.spring.controllers;
 import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,32 +27,65 @@ public class ListingsController {
 	
 	private static final String WITH_LIST_ID = "/{listingsId}";
 
+	@Value("${info.version:unknown}")
+	private String appVersion;
+	@Value("${info.name:unknown}")
+	private String appName;
+	private static final String SERVICE_HEADER = "X-SERVICE";
+	private static final String SERVICE_VALUE_FORMAT = "%s/%s";
+
 	@PostMapping
-	public ResponseEntity<Listings> createListings(HttpServletRequest request, @RequestBody Listings listing) throws Exception {
-		return listingService.createListings(request, listing);
+	public ResponseEntity<?> createListings(HttpServletRequest request, @RequestBody Listings listing) throws Exception {
+		// Process response
+		return ResponseEntity
+					.created(listingService.createListings(request, listing))
+					.header(SERVICE_HEADER, String.format(SERVICE_VALUE_FORMAT, appName, appVersion))
+					.build();
 	}
 	
 	@GetMapping
 	public ResponseEntity<?> readAllListings(@RequestParam Optional<Integer> page, @RequestParam Optional<Integer> limit, @RequestParam Optional<Boolean> showAll) {
+		// Set defaults
 		int getPage = (page.isPresent()) ? page.get() : 0;
 		int withCount = (limit.isPresent()) ? limit.get() : 100;
 		Boolean viewAll = (showAll.isPresent()) ? showAll.get() : false;
-		return listingService.readAllListings(getPage, withCount, viewAll);
+		// Process response
+		return ResponseEntity
+					.ok()
+					.header(SERVICE_HEADER, String.format(SERVICE_VALUE_FORMAT, appName, appVersion))
+					.body(listingService.readAllListings(getPage, withCount, viewAll));
 	}
 	
 	@GetMapping(WITH_LIST_ID)
 	public  ResponseEntity<Listings> readListings(@PathVariable long listingsId) {
-		return listingService.readListings(listingsId);
+		// Process response
+		return ResponseEntity
+					.ok()
+					.header(SERVICE_HEADER, String.format(SERVICE_VALUE_FORMAT, appName, appVersion))
+					.body(listingService.readListings(listingsId));
 	}
 	
 	@PatchMapping(WITH_LIST_ID)
-	public ResponseEntity<String> updateListings(@PathVariable long listingsId, @RequestBody Listings listing) {
+	public ResponseEntity<?> updateListings(@PathVariable long listingsId, @RequestBody Listings listing) {
+		// Save the ID in the body
 		listing.setId(listingsId);
-		return listingService.updateListings(listingsId, listing);
+		// Update the entity
+		listingService.updateListings(listingsId, listing);
+		// Process response
+		return ResponseEntity
+					.noContent()
+					.header(SERVICE_HEADER, String.format(SERVICE_VALUE_FORMAT, appName, appVersion))
+					.build();
 	}
 	
 	@DeleteMapping(WITH_LIST_ID)
-	public ResponseEntity<String>  deleteListings(@PathVariable long listingsId) {
-		return listingService.deleteListings(listingsId);
+	public ResponseEntity<?>  deleteListings(@PathVariable long listingsId) {
+		// Process function
+		listingService.deleteListings(listingsId);
+		// Process response
+		return ResponseEntity
+				.noContent()
+				.header(SERVICE_HEADER, String.format(SERVICE_VALUE_FORMAT, appName, appVersion))
+				.build();
 	}
 }

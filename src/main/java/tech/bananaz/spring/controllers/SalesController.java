@@ -3,6 +3,7 @@ package tech.bananaz.spring.controllers;
 import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,32 +27,65 @@ public class SalesController {
 
 	private final String WITH_SALE_ID = "/{salesId}";
 
+	@Value("${info.version:unknown}")
+	private String appVersion;
+	@Value("${info.name:unknown}")
+	private String appName;
+	private static final String SERVICE_HEADER = "X-SERVICE";
+	private static final String SERVICE_VALUE_FORMAT = "%s/%s";
+
 	@PostMapping
-	public ResponseEntity<Sales> createSales(HttpServletRequest request, @RequestBody Sales sale) throws Exception {
-		return saleService.createSales(request, sale);
+	public ResponseEntity<?> createSales(HttpServletRequest request, @RequestBody Sales sale) throws Exception {
+		// Process response
+		return ResponseEntity
+					.created(saleService.createSales(request, sale))
+					.header(SERVICE_HEADER, String.format(SERVICE_VALUE_FORMAT, appName, appVersion))
+					.build();
 	}
 	
 	@GetMapping
 	public ResponseEntity<?> readAllSales(@RequestParam Optional<Integer> page, @RequestParam Optional<Integer> limit, @RequestParam Optional<Boolean> showAll) {
+		// Set defaults
 		int getPage = (page.isPresent()) ? page.get() : 0;
 		int withCount = (limit.isPresent()) ? limit.get() : 100;
 		Boolean viewAll = (showAll.isPresent()) ? showAll.get() : false;
-		return saleService.readAllSales(getPage, withCount, viewAll);
+		// Process response
+		return ResponseEntity
+					.ok()
+					.header(SERVICE_HEADER, String.format(SERVICE_VALUE_FORMAT, appName, appVersion))
+					.body(saleService.readAllSales(getPage, withCount, viewAll));
 	}
 	
 	@GetMapping(WITH_SALE_ID)
 	public  ResponseEntity<Sales> readSales(@PathVariable long salesId) {
-		return saleService.readSales(salesId);
+		// Process response
+		return ResponseEntity
+					.ok()
+					.header(SERVICE_HEADER, String.format(SERVICE_VALUE_FORMAT, appName, appVersion))
+					.body(saleService.readSales(salesId));
 	}
 	
 	@PatchMapping(WITH_SALE_ID)
-	public ResponseEntity<String> updateSales(@PathVariable long salesId, @RequestBody Sales sale) {
+	public ResponseEntity<?> updateSales(@PathVariable long salesId, @RequestBody Sales sale) {
+		// Assign the ID into the body
 		sale.setId(salesId);
-		return saleService.updateSales(salesId, sale);
+		// Update function
+		saleService.updateSales(salesId, sale);
+		// Process response
+		return ResponseEntity
+					.noContent()
+					.header(SERVICE_HEADER, String.format(SERVICE_VALUE_FORMAT, appName, appVersion))
+					.build();
 	}
 	
 	@DeleteMapping(WITH_SALE_ID)
 	public ResponseEntity<String>  deleteSales(@PathVariable long salesId) {
-		return saleService.deleteSales(salesId);
+		// Process function
+		saleService.deleteSales(salesId);
+		// Process response
+		return ResponseEntity
+					.noContent()
+					.header(SERVICE_HEADER, String.format(SERVICE_VALUE_FORMAT, appName, appVersion))
+					.build();
 	}
 }
