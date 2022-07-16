@@ -38,6 +38,7 @@ public class SalesService {
 		if(isNull(sale.getShowBundles())) 	  	 sale.setShowBundles(true);
 		if(isNull(sale.getBurnWatcher())) 	  	 sale.setBurnWatcher(false);
 		if(isNull(sale.getMintWatcher())) 	  	 sale.setMintWatcher(false);
+		if(isNull(sale.getSolanaOnOpensea())) 	 sale.setSolanaOnOpensea(false);
 		// Validate Access
 		if(nonNull(sale.getDiscordToken()) && nonNull(sale.getDiscordChannelId()))
 			new DiscordBot(sale.getDiscordToken(), sale.getDiscordChannelId());

@@ -3,7 +3,6 @@ package tech.bananaz.spring.controllers;
 import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import tech.bananaz.spring.models.*;
 import tech.bananaz.spring.services.SalesService;
 
@@ -27,19 +25,11 @@ public class SalesController {
 
 	private final String WITH_SALE_ID = "/{salesId}";
 
-	@Value("${info.version:unknown}")
-	private String appVersion;
-	@Value("${info.name:unknown}")
-	private String appName;
-	private static final String SERVICE_HEADER = "X-SERVICE";
-	private static final String SERVICE_VALUE_FORMAT = "%s/%s";
-
 	@PostMapping
 	public ResponseEntity<?> createSales(HttpServletRequest request, @RequestBody Sales sale) throws Exception {
 		// Process response
 		return ResponseEntity
 					.created(saleService.createSales(request, sale))
-					.header(SERVICE_HEADER, String.format(SERVICE_VALUE_FORMAT, appName, appVersion))
 					.build();
 	}
 	
@@ -50,19 +40,13 @@ public class SalesController {
 		int withCount = (limit.isPresent()) ? limit.get() : 100;
 		Boolean viewAll = (showAll.isPresent()) ? showAll.get() : false;
 		// Process response
-		return ResponseEntity
-					.ok()
-					.header(SERVICE_HEADER, String.format(SERVICE_VALUE_FORMAT, appName, appVersion))
-					.body(saleService.readAllSales(getPage, withCount, viewAll));
+		return ResponseEntity.ok(saleService.readAllSales(getPage, withCount, viewAll));
 	}
 	
 	@GetMapping(WITH_SALE_ID)
 	public  ResponseEntity<Sales> readSales(@PathVariable long salesId) {
 		// Process response
-		return ResponseEntity
-					.ok()
-					.header(SERVICE_HEADER, String.format(SERVICE_VALUE_FORMAT, appName, appVersion))
-					.body(saleService.readSales(salesId));
+		return ResponseEntity.ok(saleService.readSales(salesId));
 	}
 	
 	@PatchMapping(WITH_SALE_ID)
@@ -72,10 +56,7 @@ public class SalesController {
 		// Update function
 		saleService.updateSales(salesId, sale);
 		// Process response
-		return ResponseEntity
-					.noContent()
-					.header(SERVICE_HEADER, String.format(SERVICE_VALUE_FORMAT, appName, appVersion))
-					.build();
+		return ResponseEntity.noContent().build();
 	}
 	
 	@DeleteMapping(WITH_SALE_ID)
@@ -83,9 +64,6 @@ public class SalesController {
 		// Process function
 		saleService.deleteSales(salesId);
 		// Process response
-		return ResponseEntity
-					.noContent()
-					.header(SERVICE_HEADER, String.format(SERVICE_VALUE_FORMAT, appName, appVersion))
-					.build();
+		return ResponseEntity.noContent().build();
 	}
 }
