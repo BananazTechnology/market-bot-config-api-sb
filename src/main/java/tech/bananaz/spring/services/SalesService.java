@@ -30,7 +30,7 @@ public class SalesService {
 		// Set defaults
 		if(isNull(sale.getActive())) 		  	 sale.setActive(true);
 		if(isNull(sale.getAutoRarity())) 	  	 sale.setAutoRarity(false);
-		if(isNull(sale.getContractIsSlug()))   	 sale.setContractIsSlug(false);
+		if(isNull(sale.getIsSlug()))   	 		 sale.setIsSlug(false);
 		if(isNull(sale.getExcludeDiscord()))   	 sale.setExcludeDiscord(false);
 		if(isNull(sale.getExcludeTwitter()))   	 sale.setExcludeTwitter(false);
 		if(isNull(sale.getExcludeLooksrare())) 	 sale.setExcludeLooksrare(false);
@@ -39,6 +39,9 @@ public class SalesService {
 		if(isNull(sale.getBurnWatcher())) 	  	 sale.setBurnWatcher(false);
 		if(isNull(sale.getMintWatcher())) 	  	 sale.setMintWatcher(false);
 		if(isNull(sale.getSolanaOnOpensea())) 	 sale.setSolanaOnOpensea(false);
+		// If SOL then address is always a slug
+		if(sale.getSolanaOnOpensea())			 sale.setIsSlug(true);
+		
 		// Validate Access
 		if(nonNull(sale.getDiscordToken()) && nonNull(sale.getDiscordChannelId()))
 			new DiscordBot(sale.getDiscordToken(), sale.getDiscordChannelId());

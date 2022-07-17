@@ -31,13 +31,16 @@ public class ListingsService {
 		// Set defaults
 		if(isNull(listing.getActive())) 		  	 listing.setActive(true);
 		if(isNull(listing.getAutoRarity())) 	  	 listing.setAutoRarity(false);
-		if(isNull(listing.getContractIsSlug()))   	 listing.setContractIsSlug(false);
+		if(isNull(listing.getIsSlug()))   	 		 listing.setIsSlug(false);
 		if(isNull(listing.getExcludeDiscord()))   	 listing.setExcludeDiscord(false);
 		if(isNull(listing.getExcludeTwitter()))   	 listing.setExcludeTwitter(false);
 		if(isNull(listing.getExcludeLooksrare())) 	 listing.setExcludeLooksrare(false);
 		if(isNull(listing.getExcludeOpensea()))   	 listing.setExcludeOpensea(false);
 		if(isNull(listing.getShowBundles())) 	  	 listing.setShowBundles(true);
 		if(isNull(listing.getSolanaOnOpensea())) 	 listing.setSolanaOnOpensea(false);
+		// If SOL then address is always a slug
+		if(listing.getSolanaOnOpensea())			 listing.setIsSlug(true);
+		
 		// Validate Access
 		if(nonNull(listing.getDiscordToken()) && nonNull(listing.getDiscordChannelId()))
 			new DiscordBot(listing.getDiscordToken(), listing.getDiscordChannelId());

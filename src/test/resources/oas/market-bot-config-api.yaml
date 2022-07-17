@@ -274,8 +274,6 @@ components:
         autoRarity:
           type: boolean
           default: false
-        rarityEngine:
-          type: string
         raritySlugOverwrite:
           type: string
         excludeOpensea:
@@ -290,7 +288,7 @@ components:
         excludeTwitter:
           type: boolean
           default: false
-        contractIsSlug:
+        isSlug:
           type: boolean
           default: false
         solanaOnOpensea:
@@ -337,8 +335,6 @@ components:
         autoRarity:
           type: boolean
           default: false
-        rarityEngine:
-          type: string
         raritySlugOverwrite:
           type: string
         excludeOpensea:
@@ -353,7 +349,7 @@ components:
         excludeTwitter:
           type: boolean
           default: false
-        contractIsSlug:
+        isSlug:
           type: boolean
           default: false
         solanaOnOpensea:

@@ -19,7 +19,7 @@ public class EventsController {
 	@GetMapping("/listings")
 	public  ResponseEntity<?> readAllListingEvents(@RequestParam Optional<Integer> page, @RequestParam Optional<Integer> limit, @RequestParam Optional<Boolean> showAll) {
 		int getPage = (page.isPresent()) ? page.get() : 0;
-		int withCount = (limit.isPresent()) ? limit.get() : 100;
+		int withCount = (limit.isPresent()) ? limit.get() : 50;
 		Boolean viewAll = (showAll.isPresent()) ? showAll.get() : false;
 		
 		return ResponseEntity.ok(eventsService.readAllListingEvents(getPage, withCount, viewAll));
