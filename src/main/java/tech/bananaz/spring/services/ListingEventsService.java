@@ -1,30 +1,24 @@
 package tech.bananaz.spring.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import tech.bananaz.spring.repositories.ListingEventPagingRepository;
-import tech.bananaz.spring.repositories.ListingEventRepository;
+import tech.bananaz.spring.models.Event;
+import tech.bananaz.spring.repositories.EventPagingRepository;
 
 @Service
 public class ListingEventsService {
 	
 	// Assets for Listing Config
 	@Autowired
-	ListingEventRepository listEventsRepo;
-	@Autowired
-	ListingEventPagingRepository listEventsPagingRepo;
+	EventPagingRepository listEventsPagingRepo;
 	
 	@Transactional
-	public Object readAllListingEvents(int page, int limit, Boolean showAll) {
-		// If asking for the older way of showing all
-		if(showAll) return listEventsRepo.findAllOrderByCreatedDateDesc();
-		// Everything else paging
-		Pageable where = PageRequest.of(page, limit).withSort(Direction.DESC, "createdDate");
-		return listEventsPagingRepo.findAll(where);
+	public Page<Event> readAllEvents(PageRequest pageOptions, Specification<Event> eSpec) {
+		return listEventsPagingRepo.findAll(eSpec, pageOptions);
 	}
 	
 }

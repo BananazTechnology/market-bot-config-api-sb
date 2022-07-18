@@ -9,7 +9,6 @@ import tech.bananaz.spring.discord.DiscordBot;
 import tech.bananaz.spring.exceptions.ResourceNotFoundException;
 import tech.bananaz.spring.models.Sales;
 import tech.bananaz.spring.repositories.SalesConfigPagingRepository;
-import tech.bananaz.spring.repositories.SalesConfigRepository;
 import java.net.URI;
 import javax.servlet.http.HttpServletRequest;
 import static java.util.Objects.isNull;
@@ -19,8 +18,6 @@ import static java.util.Objects.nonNull;
 public class SalesService {
 	
 	// Assets for Listing Config
-	@Autowired
-	SalesConfigRepository salesRepository;
 	@Autowired
 	SalesConfigPagingRepository salePagingRepository;
 	private final String salesNotFoundException = "Sales with the value %s was not found";
@@ -46,7 +43,7 @@ public class SalesService {
 		if(nonNull(sale.getDiscordToken()) && nonNull(sale.getDiscordChannelId()))
 			new DiscordBot(sale.getDiscordToken(), sale.getDiscordChannelId());
 		// Run function
-		Sales newConf = salesRepository.save(sale);
+		Sales newConf = salePagingRepository.save(sale);
 		// Build response
 		return URI.create(request.getRequestURL()+"/"+newConf.getId().toString());
 	}
@@ -54,7 +51,7 @@ public class SalesService {
 	@Transactional
 	public Object readAllSales(int page, int limit, Boolean showAll) {
 		// If asking for the older way of showing all
-		if(showAll) return salesRepository.findAll();
+		if(showAll) return salePagingRepository.findAll();
 		// Everything else paging
 		Pageable where = PageRequest.of(page, limit);
 		return salePagingRepository.findAll(where);
@@ -65,7 +62,7 @@ public class SalesService {
 		// Ensure exists or throw error
 		checkSalesExists(salesId);
 		// Build response
-		return salesRepository.findById(salesId).get();
+		return salePagingRepository.findById(salesId).get();
 	}
 	
 	@Transactional
@@ -73,7 +70,7 @@ public class SalesService {
 		// Ensure exists or throw error
 		checkSalesExists(salesId);
 		// Get existing
-		Sales existingConf = salesRepository.findById(salesId).get();
+		Sales existingConf = salePagingRepository.findById(salesId).get();
 		// Update provided
 		if(nonNull(sale.getContractAddress())) 	 	    existingConf.setContractAddress(sale.getContractAddress());
 		if(nonNull(sale.getInterval())) 		  	    existingConf.setInterval(sale.getInterval());
@@ -92,14 +89,12 @@ public class SalesService {
 		if(nonNull(sale.getExcludeOpensea()))   		existingConf.setExcludeOpensea(sale.getExcludeOpensea());
 		if(nonNull(sale.getBurnWatcher())) 	  			existingConf.setBurnWatcher(sale.getBurnWatcher());
 		if(nonNull(sale.getMintWatcher())) 	  			existingConf.setMintWatcher(sale.getMintWatcher());
-		if(nonNull(sale.getLastOpenseaId()))			existingConf.setLastOpenseaId(sale.getLastOpenseaId());
-		if(nonNull(sale.getLastLooksId()))			    existingConf.setLastLooksId(sale.getLastLooksId());
 		if(nonNull(sale.getActive())) 		   		    existingConf.setActive(sale.getActive());
 		// Validate Access
 		if(nonNull(existingConf.getDiscordToken()) && nonNull(existingConf.getDiscordChannelId()))
 			new DiscordBot(existingConf.getDiscordToken(), existingConf.getDiscordChannelId());
 		// Save
-		salesRepository.save(existingConf);
+		salePagingRepository.save(existingConf);
 	}
 	
 	@Transactional
@@ -107,7 +102,7 @@ public class SalesService {
 		// Ensure exists or throw error
 		checkSalesExists(salesId);
 		// Delete
-		salesRepository.deleteById(salesId);
+		salePagingRepository.deleteById(salesId);
 	}
 	
 	/*
@@ -115,7 +110,7 @@ public class SalesService {
 	 */
 	private void checkSalesExists(long salesId) {
 		// Check existence
-		if(!salesRepository.existsById(salesId))
+		if(!salePagingRepository.existsById(salesId))
 			throw new ResourceNotFoundException(String.format(salesNotFoundException, salesId));
 	}
 

@@ -9,7 +9,6 @@ import tech.bananaz.spring.discord.DiscordBot;
 import tech.bananaz.spring.exceptions.ResourceNotFoundException;
 import tech.bananaz.spring.models.Listings;
 import tech.bananaz.spring.repositories.ListingsConfigPagingRepository;
-import tech.bananaz.spring.repositories.ListingsConfigRepository;
 import java.net.URI;
 import javax.servlet.http.HttpServletRequest;
 import static java.util.Objects.isNull;
@@ -19,8 +18,6 @@ import static java.util.Objects.nonNull;
 public class ListingsService {
 	
 	// Assets for Listing Config
-	@Autowired
-	ListingsConfigRepository listingsRepository;
 	@Autowired
 	ListingsConfigPagingRepository listPagingRepository;
 	
@@ -45,7 +42,7 @@ public class ListingsService {
 		if(nonNull(listing.getDiscordToken()) && nonNull(listing.getDiscordChannelId()))
 			new DiscordBot(listing.getDiscordToken(), listing.getDiscordChannelId());
 		// Run function
-		Listings newConf = listingsRepository.save(listing);
+		Listings newConf = listPagingRepository.save(listing);
 		// Build response
 		return URI.create(request.getRequestURL()+"/"+newConf.getId().toString());
 	}
@@ -53,7 +50,7 @@ public class ListingsService {
 	@Transactional
 	public Object readAllListings(int page, int limit, Boolean showAll) {
 		// If asking for the older way of showing all
-		if(showAll) return listingsRepository.findAll();
+		if(showAll) return listPagingRepository.findAll();
 		// Everything else paging
 		Pageable where = PageRequest.of(page, limit);
 		return listPagingRepository.findAll(where);
@@ -64,7 +61,7 @@ public class ListingsService {
 		// Ensure exists or throw error
 		checkListingsExists(listingsId);
 		// Build response
-		return listingsRepository.findById(listingsId).get();
+		return listPagingRepository.findById(listingsId).get();
 	}
 	
 	@Transactional
@@ -72,7 +69,7 @@ public class ListingsService {
 		// Ensure exists or throw error
 		checkListingsExists(listingsId);
 		// Get existing
-		Listings existingConf = listingsRepository.findById(listingsId).get();
+		Listings existingConf = listPagingRepository.findById(listingsId).get();
 		// Update provided
 		if(nonNull(listing.getContractAddress())) 	 	   existingConf.setContractAddress(listing.getContractAddress());
 		if(nonNull(listing.getInterval())) 		  	  	   existingConf.setInterval(listing.getInterval());
@@ -90,14 +87,12 @@ public class ListingsService {
 		if(nonNull(listing.getExcludeTwitter()))   		   existingConf.setExcludeTwitter(listing.getExcludeTwitter());
 		if(nonNull(listing.getExcludeLooksrare())) 		   existingConf.setExcludeLooksrare(listing.getExcludeLooksrare());
 		if(nonNull(listing.getExcludeOpensea()))   		   existingConf.setExcludeOpensea(listing.getExcludeOpensea());
-		if(nonNull(listing.getLastOpenseaId()))			   existingConf.setLastOpenseaId(listing.getLastOpenseaId());
-		if(nonNull(listing.getLastLooksId()))			   existingConf.setLastLooksId(listing.getLastLooksId());
 		if(nonNull(listing.getActive())) 		   		   existingConf.setActive(listing.getActive());
 		// Validate Access
 		if(nonNull(existingConf.getDiscordToken()) && nonNull(existingConf.getDiscordChannelId()))
 			new DiscordBot(existingConf.getDiscordToken(), existingConf.getDiscordChannelId());
 		// Save
-		listingsRepository.save(existingConf);
+		listPagingRepository.save(existingConf);
 	}
 	
 	@Transactional
@@ -105,7 +100,7 @@ public class ListingsService {
 		// Ensure exists or throw error
 		checkListingsExists(listingsId);
 		// Delete
-		listingsRepository.deleteById(listingsId);
+		listPagingRepository.deleteById(listingsId);
 	}
 	
 	/*
@@ -113,7 +108,7 @@ public class ListingsService {
 	 */
 	private void checkListingsExists(long listingsId) {
 		// Check existence
-		if(!listingsRepository.existsById(listingsId))
+		if(!listPagingRepository.existsById(listingsId))
 			throw new ResourceNotFoundException(String.format(listingsNotFoundException, listingsId));
 	}
 

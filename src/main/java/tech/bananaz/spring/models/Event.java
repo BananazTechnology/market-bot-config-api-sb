@@ -13,12 +13,13 @@ import lombok.ToString;
 import tech.bananaz.spring.utils.MarketPlace;
 import tech.bananaz.spring.utils.RarityEngine;
 import tech.bananaz.spring.utils.Ticker;
+import tech.bananaz.spring.utils.EventType;
 
 @ToString(includeFieldNames=true)
 @Data
 @Entity
-@Table(name = "listing_event")
-public class ListingEvent {
+@Table(name = "event")
+public class Event {
 	
 	@Id
 	private long         id;
@@ -28,7 +29,7 @@ public class ListingEvent {
 	private Instant      startTime;
 	private Instant      endTime;
 	@Column(columnDefinition = "VARCHAR(50)")
-	private String     tokenId;
+	private String       tokenId;
 	@Column(columnDefinition = "VARCHAR(75)")
 	private String       collectionName;
 	private String       collectionImageUrl;
@@ -44,13 +45,19 @@ public class ListingEvent {
 	private String       sellerName;
 	@Column(columnDefinition = "VARCHAR(127)")
 	private String       sellerUrl;
+	@Column(columnDefinition = "VARCHAR(50)")
+	private String       buyerWalletAddy;
+	@Column(columnDefinition = "VARCHAR(50)")
+	private String       buyerName;
+	@Column(columnDefinition = "VARCHAR(127)")
+	private String       buyerUrl;
 	@Column(columnDefinition = "VARCHAR(6)")
 	private String       rarity;
 	@Enumerated( EnumType.STRING )
 	@Column(columnDefinition = "VARCHAR(50)")
-	private RarityEngine engine;
+	private RarityEngine rarityEngine;
 	@Column(columnDefinition = "VARCHAR(50)")
-	private String       rarityRedirect;
+	private String       rarityUrl;
 	@Column(columnDefinition = "VARCHAR(25)")
 	private BigDecimal   priceInCrypto;
 	@Column(columnDefinition = "VARCHAR(25)")
@@ -58,6 +65,9 @@ public class ListingEvent {
 	@Enumerated( EnumType.STRING )
 	@Column(columnDefinition = "VARCHAR(6)")
 	private Ticker       cryptoType;
+	@Enumerated( EnumType.STRING )
+	@Column(columnDefinition = "VARCHAR(7)")
+	private EventType    eventType;
 	@Enumerated( EnumType.STRING )
 	@Column(columnDefinition = "VARCHAR(50)")
 	private MarketPlace  market;
