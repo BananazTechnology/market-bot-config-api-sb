@@ -236,7 +236,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"contractAddress\": \"0x2acAb3DEa77832C09420663b0E1cB386031bA17B\",\n    \"interval\": 30000\n}",
+							"raw": "{\n    \"contractAddress\": \"0x2acAb3DEa77832C09420663b0E1cB386031bA17B\",\n    \"interval\": 10000,\n    \"discordChannelId\": \"992032675407867986\",\n    \"discordToken\": \"ODg1MzE2NjE1MjEyNzY5Mjgx.YTlRWQ.Wz4efIUN3RX-_D1RlczaDJDIJQk\",\n    \"twitterApiKey\": \"pQ7LCYbUy2H3QRjB6LTcdJxyK\",\n    \"twitterApiKeySecret\": \"67SxyMSsoc5i7K4o21bpSQVK5p51RN3g2JwNB10yFhoeL0I4Gs\",\n    \"twitterAccessToken\": \"1444010486618525697-P7RviPIFWUeYCgnS4aVeFDiUAWlBoM\",\n    \"twitterAccessTokenSecret\": \"6F40aNOZ2E9fhPQtmRmFjqaWfFUIVbyzmikPkDSXk932b\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -329,13 +329,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/events/listings",
+							"raw": "{{url}}/events",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"events",
-								"listings"
+								"events"
 							]
 						}
 					},
@@ -347,18 +346,17 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/events/listings?showAll=true",
+							"raw": "{{url}}/events?eventType=SALE",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"events",
-								"listings"
+								"events"
 							],
 							"query": [
 								{
-									"key": "showAll",
-									"value": "true"
+									"key": "eventType",
+									"value": "SALE"
 								}
 							]
 						}

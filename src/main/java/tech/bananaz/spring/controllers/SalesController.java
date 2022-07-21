@@ -13,8 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import tech.bananaz.spring.models.*;
+import tech.bananaz.models.Sale;
 import tech.bananaz.spring.services.SalesService;
 
 @RestController
@@ -27,31 +26,44 @@ public class SalesController {
 	private final String WITH_SALE_ID = "/{salesId}";
 
 	@PostMapping
-	public ResponseEntity<Sales> createSales(HttpServletRequest request, @RequestBody Sales sale) throws Exception {
-		return saleService.createSales(request, sale);
+	public ResponseEntity<?> createSales(HttpServletRequest request, @RequestBody Sale sale) throws Exception {
+		// Process response
+		return ResponseEntity
+					.created(saleService.createSales(request, sale))
+					.build();
 	}
 	
 	@GetMapping
 	public ResponseEntity<?> readAllSales(@RequestParam Optional<Integer> page, @RequestParam Optional<Integer> limit, @RequestParam Optional<Boolean> showAll) {
+		// Set defaults
 		int getPage = (page.isPresent()) ? page.get() : 0;
 		int withCount = (limit.isPresent()) ? limit.get() : 100;
 		Boolean viewAll = (showAll.isPresent()) ? showAll.get() : false;
-		return saleService.readAllSales(getPage, withCount, viewAll);
+		// Process response
+		return ResponseEntity.ok(saleService.readAllSales(getPage, withCount, viewAll));
 	}
 	
 	@GetMapping(WITH_SALE_ID)
-	public  ResponseEntity<Sales> readSales(@PathVariable long salesId) {
-		return saleService.readSales(salesId);
+	public  ResponseEntity<Sale> readSales(@PathVariable long salesId) {
+		// Process response
+		return ResponseEntity.ok(saleService.readSales(salesId));
 	}
 	
 	@PatchMapping(WITH_SALE_ID)
-	public ResponseEntity<String> updateSales(@PathVariable long salesId, @RequestBody Sales sale) {
+	public ResponseEntity<?> updateSales(@PathVariable long salesId, @RequestBody Sale sale) {
+		// Assign the ID into the body
 		sale.setId(salesId);
-		return saleService.updateSales(salesId, sale);
+		// Update function
+		saleService.updateSales(salesId, sale);
+		// Process response
+		return ResponseEntity.noContent().build();
 	}
 	
 	@DeleteMapping(WITH_SALE_ID)
 	public ResponseEntity<String>  deleteSales(@PathVariable long salesId) {
-		return saleService.deleteSales(salesId);
+		// Process function
+		saleService.deleteSales(salesId);
+		// Process response
+		return ResponseEntity.noContent().build();
 	}
 }

@@ -199,35 +199,23 @@ paths:
   #
   # Events
   #
-  /events/listings:
+  /events:
     get:
-      summary: Gets all listing events
+      summary: Gets all events
       description: |
-        Gets all listing events in the db.
+        Gets all events in the database. Always returns events sorted by createdDate descending from the db, the most recently acquired item shows first.
       parameters:
         - $ref: '#/components/parameters/limit'
         - $ref: '#/components/parameters/page'
-        - $ref: '#/components/parameters/showAll'
+        - $ref: '#/components/parameters/market'
+        - $ref: '#/components/parameters/eventType'
+        - $ref: '#/components/parameters/consumed'
+        - $ref: '#/components/parameters/quantity'
+        - $ref: '#/components/parameters/configId'
       responses:
         '200':
           description: |
-            A JSON array of all listing events.
-        '401':
-          description: |
-            In this occasion please do check the apikey header/query parameter.
-  /events/sales:
-    get:
-      summary: Gets all sale events
-      description: |
-        Gets all sale events in the db.
-      parameters:
-        - $ref: '#/components/parameters/limit'
-        - $ref: '#/components/parameters/page'
-        - $ref: '#/components/parameters/showAll'
-      responses:
-        '200':
-          description: |
-            A JSON array of all sale events.
+            A JSON array of all events. Always returns events sorted by createdDate descending from the db, the most recently acquired item shows first.
         '401':
           description: |
             In this occasion please do check the apikey header/query parameter.
@@ -274,8 +262,6 @@ components:
         autoRarity:
           type: boolean
           default: false
-        rarityEngine:
-          type: string
         raritySlugOverwrite:
           type: string
         excludeOpensea:
@@ -290,16 +276,12 @@ components:
         excludeTwitter:
           type: boolean
           default: false
-        contractIsSlug:
+        isSlug:
           type: boolean
           default: false
         solanaOnOpensea:
           type: boolean
           default: false
-        lastLooksId:
-          type: number
-        lastOpenseaId:
-          type: number
         active:
           type: boolean
           default: true
@@ -337,8 +319,6 @@ components:
         autoRarity:
           type: boolean
           default: false
-        rarityEngine:
-          type: string
         raritySlugOverwrite:
           type: string
         excludeOpensea:
@@ -353,16 +333,12 @@ components:
         excludeTwitter:
           type: boolean
           default: false
-        contractIsSlug:
+        isSlug:
           type: boolean
           default: false
         solanaOnOpensea:
           type: boolean
           default: false
-        lastLooksId:
-          type: number
-        lastOpenseaId:
-          type: number
         active:
           type: boolean
           default: true
@@ -377,25 +353,54 @@ components:
     page:
       name: page
       in: query
-      description: The page of the listing to get.
+      description: The page of the events to get.
       required: false
       schema:
         type: number
     limit:
       name: limit
       in: query
-      description: The limit of the listing to get.
+      description: The limit of the events to get.
       required: false
       schema:
         type: number
-    showAll:
-      name: showAll
+    quantity:
+      name: quantity
       in: query
-      description: Whether to show all listings or not.
+      description: The number of items in the event.
+      required: false
+      schema:
+        type: number
+    configId:
+      name: configId
+      in: query
+      description: The original Sale/Listing configuration which owns the event.
+      required: false
+      schema:
+        type: number
+    consumed:
+      name: consumed
+      in: query
+      description: Filter on if the event has been picked up by consumer or not.
       required: false
       schema:
         type: boolean
-        default: false
+    market:
+      name: market
+      in: query
+      description: The marketplace of the event.
+      required: false
+      schema:
+        type: string
+        enum: [OPENSEA, LOOKSRARE]
+    eventType:
+      name: eventType
+      in: query
+      description: The type of event.
+      required: false
+      schema:
+        type: string
+        enum: [LISTING, SALE, BURN, MINT]
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

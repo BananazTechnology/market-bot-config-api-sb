@@ -8,15 +8,19 @@
 		<version>2.5.4</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
+	
 	<groupId>tech.bananaz</groupId>
 	<artifactId>market-bot-config-api-sb</artifactId>
-	<version>2.1.0</version>
+	<version>5.0.0</version>
 	<name>market-bot-config-api-sb</name>
-	<description>An API made with Spring-Boot</description>
+	<description>A @spring-projects framework project which has CRUD functionality to @mysql</description>
+	
 	<properties>
+		<bananaz.version>0.1.2</bananaz.version>
 		<java.version>11</java.version>
 		<sonar.projectKey>MarketBotConfig-api</sonar.projectKey>
 	</properties>
+	
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -57,7 +61,13 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
-				
+		
+		<!--  Bananaz Tech Core -->
+		<dependency>
+			<groupId>tech.bananaz</groupId>
+			<artifactId>bot-core</artifactId>
+			<version>${bananaz.version}</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -68,5 +78,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
 </project>

@@ -8,9 +8,8 @@ import org.javacord.api.entity.channel.*;
 import org.javacord.api.entity.permission.Permissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import tech.bananaz.spring.exceptions.BadRequestException;
-import tech.bananaz.spring.exceptions.InternalServerError;
+import tech.bananaz.exceptions.BadRequestException;
+import tech.bananaz.exceptions.InternalServerError;
 
 public class DiscordBot {
 	
