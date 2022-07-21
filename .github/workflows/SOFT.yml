@@ -27,6 +27,7 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: ${{ matrix.java }}
+      # Creates a settings.xml file for Maven
       - name: Builds settings.xml
         uses: whelk-io/maven-settings-xml-action@v20
         with:
@@ -41,24 +42,10 @@ jobs:
                 "id": "github",
                 "url": "https://maven.pkg.github.com/BananazTechnology/bot-core"
             }]
-      # Runs a set of commands using the runners shell
+      # Runs native Maven verify
       - name: Maven verify build
         run: mvn -V --fail-fast --no-transfer-progress --batch-mode clean verify -DskipTests
-      # All remaining steps are for SonarQube integration!
-      # SonarQube linting
-      - name: Cache SonarQube packages
-        uses: actions/cache@v1
-        with:
-          path: ~/.sonar/cache
-          key: ${{ runner.os }}-sonar
-          restore-keys: ${{ runner.os }}-sonar
-      - name: Cache Maven packages
-        uses: actions/cache@v1
-        with:
-          path: ~/.m2
-          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-          restore-keys: ${{ runner.os }}-m2
-      - run: cat ~/.m2/settings.xml
+      # SonarQube analysis
       - name: Build and analyze
         run: mvn -V --no-transfer-progress --batch-mode verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
         env:
