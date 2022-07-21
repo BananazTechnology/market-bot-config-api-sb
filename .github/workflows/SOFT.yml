@@ -31,6 +31,8 @@ jobs:
       - name: Maven verify build
         run: |
           mvn -V --fail-fast --no-transfer-progress --batch-mode clean verify -DskipTests
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
       # All remaining steps are for SonarQube integration!
       # SonarQube linting
       - name: Cache SonarQube packages
