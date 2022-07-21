@@ -8,7 +8,9 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import org.springframework.data.jpa.domain.Specification;
 import lombok.Getter;
-import tech.bananaz.spring.models.Event;
+import tech.bananaz.enums.Operation;
+import tech.bananaz.models.Event;
+import tech.bananaz.utils.EventSearchCriteria;
 
 @SuppressWarnings("serial")
 public class EventSpecification implements Specification<Event> {

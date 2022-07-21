@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import tech.bananaz.spring.models.*;
+import tech.bananaz.models.Sale;
 import tech.bananaz.spring.services.SalesService;
 
 @RestController
@@ -26,7 +26,7 @@ public class SalesController {
 	private final String WITH_SALE_ID = "/{salesId}";
 
 	@PostMapping
-	public ResponseEntity<?> createSales(HttpServletRequest request, @RequestBody Sales sale) throws Exception {
+	public ResponseEntity<?> createSales(HttpServletRequest request, @RequestBody Sale sale) throws Exception {
 		// Process response
 		return ResponseEntity
 					.created(saleService.createSales(request, sale))
@@ -44,13 +44,13 @@ public class SalesController {
 	}
 	
 	@GetMapping(WITH_SALE_ID)
-	public  ResponseEntity<Sales> readSales(@PathVariable long salesId) {
+	public  ResponseEntity<Sale> readSales(@PathVariable long salesId) {
 		// Process response
 		return ResponseEntity.ok(saleService.readSales(salesId));
 	}
 	
 	@PatchMapping(WITH_SALE_ID)
-	public ResponseEntity<?> updateSales(@PathVariable long salesId, @RequestBody Sales sale) {
+	public ResponseEntity<?> updateSales(@PathVariable long salesId, @RequestBody Sale sale) {
 		// Assign the ID into the body
 		sale.setId(salesId);
 		// Update function

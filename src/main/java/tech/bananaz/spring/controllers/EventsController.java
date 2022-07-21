@@ -11,11 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import tech.bananaz.spring.services.ListingEventsService;
-import tech.bananaz.spring.utils.EventSearchCriteria;
 import tech.bananaz.spring.utils.EventSpecification;
-import tech.bananaz.spring.utils.EventType;
-import tech.bananaz.spring.utils.MarketPlace;
-import tech.bananaz.spring.utils.Operation;
+import tech.bananaz.utils.*;
+import tech.bananaz.enums.*;
 
 @RestController
 @RequestMapping(value = "/events", produces = "application/json")

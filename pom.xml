@@ -10,10 +10,11 @@
 	</parent>
 	<groupId>tech.bananaz</groupId>
 	<artifactId>market-bot-config-api-sb</artifactId>
-	<version>4.0.0</version>
+	<version>5.0.0</version>
 	<name>market-bot-config-api-sb</name>
 	<description>A @spring-projects framework project which has CRUD functionality to @mysql</description>
 	<properties>
+		<bananaz.version>0.1.2</bananaz.version>
 		<java.version>11</java.version>
 		<sonar.projectKey>MarketBotConfig-api</sonar.projectKey>
 	</properties>
@@ -56,6 +57,13 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		
+		<!--  Bananaz Tech Core -->
+		<dependency>
+			<groupId>tech.bananaz</groupId>
+			<artifactId>bot-core</artifactId>
+			<version>${bananaz.version}</version>
 		</dependency>
 				
 	</dependencies>

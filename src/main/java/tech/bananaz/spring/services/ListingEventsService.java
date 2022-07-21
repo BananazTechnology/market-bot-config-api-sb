@@ -6,8 +6,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import tech.bananaz.spring.models.Event;
-import tech.bananaz.spring.repositories.EventPagingRepository;
+import tech.bananaz.models.Event;
+import tech.bananaz.repositories.EventPagingRepository;
 
 @Service
 public class ListingEventsService {

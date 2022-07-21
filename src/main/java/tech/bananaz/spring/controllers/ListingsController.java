@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import tech.bananaz.spring.models.*;
+import tech.bananaz.models.Listing;
 import tech.bananaz.spring.services.ListingsService;
 
 @RestController
@@ -26,7 +26,7 @@ public class ListingsController {
 	private static final String WITH_LIST_ID = "/{listingsId}";
 
 	@PostMapping
-	public ResponseEntity<?> createListings(HttpServletRequest request, @RequestBody Listings listing) throws Exception {
+	public ResponseEntity<?> createListings(HttpServletRequest request, @RequestBody Listing listing) throws Exception {
 		// Process response
 		return ResponseEntity
 					.created(listingService.createListings(request, listing))
@@ -44,13 +44,13 @@ public class ListingsController {
 	}
 	
 	@GetMapping(WITH_LIST_ID)
-	public  ResponseEntity<Listings> readListings(@PathVariable long listingsId) {
+	public  ResponseEntity<Listing> readListings(@PathVariable long listingsId) {
 		// Process response
 		return ResponseEntity.ok(listingService.readListings(listingsId));
 	}
 	
 	@PatchMapping(WITH_LIST_ID)
-	public ResponseEntity<?> updateListings(@PathVariable long listingsId, @RequestBody Listings listing) {
+	public ResponseEntity<?> updateListings(@PathVariable long listingsId, @RequestBody Listing listing) {
 		// Save the ID in the body
 		listing.setId(listingsId);
 		// Update the entity

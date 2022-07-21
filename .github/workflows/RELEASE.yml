@@ -31,16 +31,21 @@ jobs:
           java-version: ${{ matrix.java }}
       # Runs a set of commands using the runners shell
       - name: Maven verify build
-        run: |
-          bash mvnw -V --fail-fast --no-transfer-progress --batch-mode clean package -DskipTests
+        run: mvn -V --fail-fast --no-transfer-progress --batch-mode clean package -DskipTests
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
       # Get POM version
       - name: Extract Maven project version
-        run: echo ::set-output name=version::$(bash mvnw -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)
+        run: echo ::set-output name=version::$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)
         id: project
       # Get project name
       - name: Extract Maven artifactId
-        run: echo ::set-output name=artifactId::$(bash mvnw -q -Dexec.executable=echo -Dexec.args='${project.artifactId}' --non-recursive exec:exec)
+        run: echo ::set-output name=artifactId::$(mvn -q -Dexec.executable=echo -Dexec.args='${project.artifactId}' --non-recursive exec:exec)
         id: artifact
+      # Get Bananaz Core version
+      - name: Extract Maven Bananaz Core version
+        run: echo ::set-output name=version::$(mvn -q -Dexec.executable=echo -Dexec.args='${bananaz.version}' --non-recursive exec:exec)
+        id: btCore
       #
       # Run Docker stuff
       #
@@ -62,5 +67,7 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ steps.artifact.outputs.artifactId }}:latest, ${{ secrets.DOCKERHUB_USERNAME }}/${{ steps.artifact.outputs.artifactId }}:${{ steps.project.outputs.version }}
           labels: |
-            com.aaronrenner.bot.version=${{ steps.project.outputs.version }}
+            tech.bananaz.app.version=${{ steps.project.outputs.version }},
+            tech.bananaz.core.version=${{ steps.btCore.outputs.version }}
+
 

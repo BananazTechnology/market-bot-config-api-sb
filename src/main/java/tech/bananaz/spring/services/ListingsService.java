@@ -6,9 +6,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tech.bananaz.spring.discord.DiscordBot;
-import tech.bananaz.spring.exceptions.ResourceNotFoundException;
-import tech.bananaz.spring.models.Listings;
-import tech.bananaz.spring.repositories.ListingsConfigPagingRepository;
+import tech.bananaz.exceptions.ResourceNotFoundException;
+import tech.bananaz.models.Listing;
+import tech.bananaz.repositories.ListingConfigPagingRepository;
 import java.net.URI;
 import javax.servlet.http.HttpServletRequest;
 import static java.util.Objects.isNull;
@@ -19,12 +19,12 @@ public class ListingsService {
 	
 	// Assets for Listing Config
 	@Autowired
-	ListingsConfigPagingRepository listPagingRepository;
+	ListingConfigPagingRepository listPagingRepository;
 	
 	private final String listingsNotFoundException = "Listings with the value %s was not found";
 	
 	@Transactional
-	public URI createListings(HttpServletRequest request, Listings listing) {
+	public URI createListings(HttpServletRequest request, Listing listing) {
 		// Set defaults
 		if(isNull(listing.getActive())) 		  	 listing.setActive(true);
 		if(isNull(listing.getAutoRarity())) 	  	 listing.setAutoRarity(false);
@@ -42,7 +42,7 @@ public class ListingsService {
 		if(nonNull(listing.getDiscordToken()) && nonNull(listing.getDiscordChannelId()))
 			new DiscordBot(listing.getDiscordToken(), listing.getDiscordChannelId());
 		// Run function
-		Listings newConf = listPagingRepository.save(listing);
+		Listing newConf = listPagingRepository.save(listing);
 		// Build response
 		return URI.create(request.getRequestURL()+"/"+newConf.getId().toString());
 	}
@@ -57,7 +57,7 @@ public class ListingsService {
 	}
 	
 	@Transactional
-	public Listings readListings(long listingsId) {
+	public Listing readListings(long listingsId) {
 		// Ensure exists or throw error
 		checkListingsExists(listingsId);
 		// Build response
@@ -65,11 +65,11 @@ public class ListingsService {
 	}
 	
 	@Transactional
-	public void updateListings(long listingsId, Listings listing) {
+	public void updateListings(long listingsId, Listing listing) {
 		// Ensure exists or throw error
 		checkListingsExists(listingsId);
 		// Get existing
-		Listings existingConf = listPagingRepository.findById(listingsId).get();
+		Listing existingConf = listPagingRepository.findById(listingsId).get();
 		// Update provided
 		if(nonNull(listing.getContractAddress())) 	 	   existingConf.setContractAddress(listing.getContractAddress());
 		if(nonNull(listing.getInterval())) 		  	  	   existingConf.setInterval(listing.getInterval());

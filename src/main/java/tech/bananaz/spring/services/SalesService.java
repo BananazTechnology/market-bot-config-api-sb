@@ -6,9 +6,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tech.bananaz.spring.discord.DiscordBot;
-import tech.bananaz.spring.exceptions.ResourceNotFoundException;
-import tech.bananaz.spring.models.Sales;
-import tech.bananaz.spring.repositories.SalesConfigPagingRepository;
+import tech.bananaz.exceptions.ResourceNotFoundException;
+import tech.bananaz.models.Sale;
+import tech.bananaz.repositories.SaleConfigPagingRepository;
 import java.net.URI;
 import javax.servlet.http.HttpServletRequest;
 import static java.util.Objects.isNull;
@@ -19,11 +19,11 @@ public class SalesService {
 	
 	// Assets for Listing Config
 	@Autowired
-	SalesConfigPagingRepository salePagingRepository;
+	SaleConfigPagingRepository salePagingRepository;
 	private final String salesNotFoundException = "Sales with the value %s was not found";
 	
 	@Transactional
-	public URI createSales(HttpServletRequest request, Sales sale) {
+	public URI createSales(HttpServletRequest request, Sale sale) {
 		// Set defaults
 		if(isNull(sale.getActive())) 		  	 sale.setActive(true);
 		if(isNull(sale.getAutoRarity())) 	  	 sale.setAutoRarity(false);
@@ -43,7 +43,7 @@ public class SalesService {
 		if(nonNull(sale.getDiscordToken()) && nonNull(sale.getDiscordChannelId()))
 			new DiscordBot(sale.getDiscordToken(), sale.getDiscordChannelId());
 		// Run function
-		Sales newConf = salePagingRepository.save(sale);
+		Sale newConf = salePagingRepository.save(sale);
 		// Build response
 		return URI.create(request.getRequestURL()+"/"+newConf.getId().toString());
 	}
@@ -58,7 +58,7 @@ public class SalesService {
 	}
 	
 	@Transactional
-	public Sales readSales(long salesId) {
+	public Sale readSales(long salesId) {
 		// Ensure exists or throw error
 		checkSalesExists(salesId);
 		// Build response
@@ -66,11 +66,11 @@ public class SalesService {
 	}
 	
 	@Transactional
-	public void updateSales(long salesId, Sales sale) {
+	public void updateSales(long salesId, Sale sale) {
 		// Ensure exists or throw error
 		checkSalesExists(salesId);
 		// Get existing
-		Sales existingConf = salePagingRepository.findById(salesId).get();
+		Sale existingConf = salePagingRepository.findById(salesId).get();
 		// Update provided
 		if(nonNull(sale.getContractAddress())) 	 	    existingConf.setContractAddress(sale.getContractAddress());
 		if(nonNull(sale.getInterval())) 		  	    existingConf.setInterval(sale.getInterval());
