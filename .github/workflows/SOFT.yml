@@ -27,9 +27,19 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: ${{ matrix.java }}
-          server-id: github
-          server-username: BananazServices
-          server-password: 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
+      - uses: s4u/maven-settings-action@v2.6.0
+        with:
+          servers: |
+            [{
+                "id": "github",
+                "username": "${{ secrets.GH_USERNAME }}",
+                "password": "${{ secrets.GH_TOKEN }}"
+            }]
+          repositories: |
+            [{
+                "id": "github",
+                "url": "https://maven.pkg.github.com/BananazTechnology/bot-core"
+            }]
       - name: cat settings
         run: cat ~/.m2/settings.xml
       # Runs a set of commands using the runners shell
