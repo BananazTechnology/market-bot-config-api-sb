@@ -27,12 +27,12 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: ${{ matrix.java }}
+          server-id: github
+          server-username: BananazServices
+          server-password: ${{ secrets.GH_TOKEN }}
       # Runs a set of commands using the runners shell
       - name: Maven verify build
-        run: |
-          mvn -V --fail-fast --no-transfer-progress --batch-mode clean verify -DskipTests
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: mvn -V --fail-fast --no-transfer-progress --batch-mode clean verify -DskipTests
       # All remaining steps are for SonarQube integration!
       # SonarQube linting
       - name: Cache SonarQube packages
@@ -48,8 +48,8 @@ jobs:
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
       - name: Build and analyze
+        run: mvn -V --no-transfer-progress --batch-mode verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-        run: mvn -V --no-transfer-progress --batch-mode verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar

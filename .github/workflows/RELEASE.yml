@@ -29,11 +29,12 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: ${{ matrix.java }}
+          server-id: github
+          server-username: BananazServices
+          server-password: ${{ secrets.GH_TOKEN }}
       # Runs a set of commands using the runners shell
       - name: Maven verify build
         run: mvn -V --fail-fast --no-transfer-progress --batch-mode clean package -DskipTests
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
       # Get POM version
       - name: Extract Maven project version
         run: echo ::set-output name=version::$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)
