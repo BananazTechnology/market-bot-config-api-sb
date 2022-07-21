@@ -29,9 +29,20 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: ${{ matrix.java }}
-          server-id: github
-          server-username: BananazServices
-          server-password: ${{ secrets.GH_TOKEN }}
+      - name: Builds settings.xml
+        uses: whelk-io/maven-settings-xml-action@v20
+        with:
+          servers: |
+            [{
+                "id": "github",
+                "username": "${{ secrets.GH_USERNAME }}",
+                "password": "${{ secrets.GH_TOKEN }}"
+            }]
+          repositories: |
+            [{
+                "id": "github",
+                "url": "https://maven.pkg.github.com/BananazTechnology/bot-core"
+            }]
       # Runs a set of commands using the runners shell
       - name: Maven verify build
         run: mvn -V --fail-fast --no-transfer-progress --batch-mode clean package -DskipTests

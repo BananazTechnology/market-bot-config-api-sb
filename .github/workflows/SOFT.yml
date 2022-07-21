@@ -41,8 +41,6 @@ jobs:
                 "id": "github",
                 "url": "https://maven.pkg.github.com/BananazTechnology/bot-core"
             }]
-      - name: cat settings
-        run: cat ~/.m2/settings.xml
       # Runs a set of commands using the runners shell
       - name: Maven verify build
         run: mvn -V --fail-fast --no-transfer-progress --batch-mode clean verify -DskipTests
@@ -60,6 +58,7 @@ jobs:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
+      - run: cat ~/.m2/settings.xml
       - name: Build and analyze
         run: mvn -V --no-transfer-progress --batch-mode verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
         env:
