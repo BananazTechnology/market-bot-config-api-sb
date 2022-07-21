@@ -28,7 +28,7 @@ jobs:
         with:
           java-version: ${{ matrix.java }}
           server-id: github
-          server-username: BananazServices
+          server-username: ${{ secrets.GH_USERNAME }}
           server-password: ${{ secrets.GH_TOKEN }}
       # Runs a set of commands using the runners shell
       - name: Maven verify build
