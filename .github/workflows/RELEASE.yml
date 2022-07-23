@@ -10,8 +10,6 @@ on:
     
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow builds the Java app!
-  # This workflow submites the release
   release:
     if: startsWith(github.event.head_commit.message, '[release]') == true
     # The type of runner that the job will run on
@@ -78,9 +76,12 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ steps.artifact.outputs.artifactId }}:latest, ${{ secrets.DOCKERHUB_USERNAME }}/${{ steps.artifact.outputs.artifactId }}:${{ steps.project.outputs.version }}
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/${{ steps.artifact.outputs.artifactId }}:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/${{ steps.artifact.outputs.artifactId }}:${{ steps.project.outputs.version }}
           labels: |
-            tech.bananaz.app.version=${{ steps.project.outputs.version }},
+            tech.bananaz.app.version=${{ steps.project.outputs.version }}
             tech.bananaz.core.version=${{ steps.btCore.outputs.version }}
+            tech.bananaz.maintainer=contact@bananaz.tech
 
 
