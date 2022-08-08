@@ -42,5 +42,14 @@ When building this application for production I have included the Dockerfile tha
 and executing all source code in the base directory. Using CI/CD this can all be automated and I will try to include
 an example for using Github workflows.
 
+### Encryption
+This property is required for all the encryption features across our organization:
+
+| Variable | Description |
+|---|---|
+| bot.encryptionKey | Required |
+
+You can use a built-in encryption utility API available at `/security/encrypt`  and `/security/decrypt` default to this property above and can be replaced by using a `X-Security-Key` header.
+
 ### Contact
-* Aaron Renner (admin@arenner.io)
+* Aaron Renner (aaron@bananaz.tech)

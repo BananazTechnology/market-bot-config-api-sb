@@ -50,7 +50,7 @@ public class SalesController {
 	}
 	
 	@PatchMapping(WITH_SALE_ID)
-	public ResponseEntity<?> updateSales(@PathVariable long salesId, @RequestBody Sale sale) {
+	public ResponseEntity<?> updateSales(@PathVariable long salesId, @RequestBody Sale sale) throws Exception {
 		// Assign the ID into the body
 		sale.setId(salesId);
 		// Update function
