@@ -10,7 +10,7 @@ import tech.bananaz.models.Event;
 import tech.bananaz.repositories.EventPagingRepository;
 
 @Service
-public class ListingEventsService {
+public class EventsService {
 	
 	// Assets for Listing Config
 	@Autowired

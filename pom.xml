@@ -11,12 +11,12 @@
 	
 	<groupId>tech.bananaz</groupId>
 	<artifactId>market-bot-config-api-sb</artifactId>
-	<version>5.3.0</version>
+	<version>5.3.1</version>
 	<name>market-bot-config-api-sb</name>
 	<description>A @spring-projects framework project which has CRUD functionality to @mysql</description>
 	
 	<properties>
-		<bananaz.version>1.3.0</bananaz.version>
+		<bananaz.version>1.3.1</bananaz.version>
 		<java.version>11</java.version>
 		<sonar.projectKey>MarketBotConfig-api</sonar.projectKey>
 	</properties>

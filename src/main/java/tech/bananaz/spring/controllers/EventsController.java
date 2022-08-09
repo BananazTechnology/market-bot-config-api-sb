@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import tech.bananaz.spring.services.ListingEventsService;
+import tech.bananaz.spring.services.EventsService;
 import tech.bananaz.utils.*;
 import tech.bananaz.enums.*;
 
@@ -19,7 +19,7 @@ import tech.bananaz.enums.*;
 public class EventsController {
 	
 	@Autowired
-	ListingEventsService eventsService;
+	EventsService eventsService;
 
 	@GetMapping()
 	public  ResponseEntity<?> readAllEvents(
