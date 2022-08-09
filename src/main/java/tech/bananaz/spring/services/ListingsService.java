@@ -1,6 +1,7 @@
 package tech.bananaz.spring.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -13,9 +14,15 @@ import java.net.URI;
 import javax.servlet.http.HttpServletRequest;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
+import static tech.bananaz.utils.EncryptionUtils.decryptListing;
+import static tech.bananaz.utils.EncryptionUtils.encryptListing;
 
 @Service
 public class ListingsService {
+	
+	// Security
+	@Value("${bot.encryptionKey}")
+	private String key;
 	
 	// Assets for Listing Config
 	@Autowired
@@ -24,7 +31,7 @@ public class ListingsService {
 	private final String listingsNotFoundException = "Listings with the value %s was not found";
 	
 	@Transactional
-	public URI createListings(HttpServletRequest request, Listing listing) {
+	public URI createListings(HttpServletRequest request, Listing listing) throws Exception {
 		// Set defaults
 		if(isNull(listing.getActive())) 		  	 listing.setActive(true);
 		if(isNull(listing.getAutoRarity())) 	  	 listing.setAutoRarity(false);
@@ -35,14 +42,20 @@ public class ListingsService {
 		if(isNull(listing.getExcludeOpensea()))   	 listing.setExcludeOpensea(false);
 		if(isNull(listing.getShowBundles())) 	  	 listing.setShowBundles(true);
 		if(isNull(listing.getSolanaOnOpensea())) 	 listing.setSolanaOnOpensea(false);
+		
 		// If SOL then address is always a slug
 		if(listing.getSolanaOnOpensea())			 listing.setIsSlug(true);
 		
 		// Validate Access
 		if(nonNull(listing.getDiscordToken()) && nonNull(listing.getDiscordChannelId()))
 			new DiscordBot(listing.getDiscordToken(), listing.getDiscordChannelId());
+		
+		// Security
+		listing = encryptListing(this.key, listing);
+		
 		// Run function
 		Listing newConf = listPagingRepository.save(listing);
+		
 		// Build response
 		return URI.create(request.getRequestURL()+"/"+newConf.getId().toString());
 	}
@@ -65,11 +78,16 @@ public class ListingsService {
 	}
 	
 	@Transactional
-	public void updateListings(long listingsId, Listing listing) {
+	public void updateListings(long listingsId, Listing listing) throws Exception {
 		// Ensure exists or throw error
 		checkListingsExists(listingsId);
+		
 		// Get existing
 		Listing existingConf = listPagingRepository.findById(listingsId).get();
+		
+		// Decrypt to update - only lasts till the security block about 15 lines below
+		existingConf 		 = decryptListing(this.key, existingConf);
+		
 		// Update provided
 		if(nonNull(listing.getContractAddress())) 	 	   existingConf.setContractAddress(listing.getContractAddress());
 		if(nonNull(listing.getInterval())) 		  	  	   existingConf.setInterval(listing.getInterval());
@@ -88,9 +106,14 @@ public class ListingsService {
 		if(nonNull(listing.getExcludeLooksrare())) 		   existingConf.setExcludeLooksrare(listing.getExcludeLooksrare());
 		if(nonNull(listing.getExcludeOpensea()))   		   existingConf.setExcludeOpensea(listing.getExcludeOpensea());
 		if(nonNull(listing.getActive())) 		   		   existingConf.setActive(listing.getActive());
+		
 		// Validate Access
 		if(nonNull(existingConf.getDiscordToken()) && nonNull(existingConf.getDiscordChannelId()))
 			new DiscordBot(existingConf.getDiscordToken(), existingConf.getDiscordChannelId());
+		
+		// Security
+		existingConf = encryptListing(this.key, existingConf);
+		
 		// Save
 		listPagingRepository.save(existingConf);
 	}

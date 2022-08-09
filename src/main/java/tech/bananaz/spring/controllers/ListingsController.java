@@ -50,7 +50,7 @@ public class ListingsController {
 	}
 	
 	@PatchMapping(WITH_LIST_ID)
-	public ResponseEntity<?> updateListings(@PathVariable long listingsId, @RequestBody Listing listing) {
+	public ResponseEntity<?> updateListings(@PathVariable long listingsId, @RequestBody Listing listing) throws Exception {
 		// Save the ID in the body
 		listing.setId(listingsId);
 		// Update the entity

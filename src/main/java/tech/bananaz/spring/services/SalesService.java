@@ -1,6 +1,7 @@
 package tech.bananaz.spring.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -13,9 +14,15 @@ import java.net.URI;
 import javax.servlet.http.HttpServletRequest;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
+import static tech.bananaz.utils.EncryptionUtils.encryptSale;
+import static tech.bananaz.utils.EncryptionUtils.decryptSale;
 
 @Service
 public class SalesService {
+	
+	// Security
+	@Value("${bot.encryptionKey}")
+	private String key;
 	
 	// Assets for Listing Config
 	@Autowired
@@ -23,7 +30,7 @@ public class SalesService {
 	private final String salesNotFoundException = "Sales with the value %s was not found";
 	
 	@Transactional
-	public URI createSales(HttpServletRequest request, Sale sale) {
+	public URI createSales(HttpServletRequest request, Sale sale) throws Exception {
 		// Set defaults
 		if(isNull(sale.getActive())) 		  	 sale.setActive(true);
 		if(isNull(sale.getAutoRarity())) 	  	 sale.setAutoRarity(false);
@@ -42,8 +49,13 @@ public class SalesService {
 		// Validate Access
 		if(nonNull(sale.getDiscordToken()) && nonNull(sale.getDiscordChannelId()))
 			new DiscordBot(sale.getDiscordToken(), sale.getDiscordChannelId());
+		
+		// Security
+		sale = encryptSale(this.key, sale);
+		
 		// Run function
 		Sale newConf = salePagingRepository.save(sale);
+		
 		// Build response
 		return URI.create(request.getRequestURL()+"/"+newConf.getId().toString());
 	}
@@ -66,11 +78,16 @@ public class SalesService {
 	}
 	
 	@Transactional
-	public void updateSales(long salesId, Sale sale) {
+	public void updateSales(long salesId, Sale sale) throws Exception {
 		// Ensure exists or throw error
 		checkSalesExists(salesId);
+		
 		// Get existing
 		Sale existingConf = salePagingRepository.findById(salesId).get();
+		
+		// Decrypt to update - only lasts till the security block about 15 lines below];
+		existingConf 	  = decryptSale(this.key, existingConf);
+		
 		// Update provided
 		if(nonNull(sale.getContractAddress())) 	 	    existingConf.setContractAddress(sale.getContractAddress());
 		if(nonNull(sale.getInterval())) 		  	    existingConf.setInterval(sale.getInterval());
@@ -90,9 +107,14 @@ public class SalesService {
 		if(nonNull(sale.getBurnWatcher())) 	  			existingConf.setBurnWatcher(sale.getBurnWatcher());
 		if(nonNull(sale.getMintWatcher())) 	  			existingConf.setMintWatcher(sale.getMintWatcher());
 		if(nonNull(sale.getActive())) 		   		    existingConf.setActive(sale.getActive());
+		
 		// Validate Access
 		if(nonNull(existingConf.getDiscordToken()) && nonNull(existingConf.getDiscordChannelId()))
 			new DiscordBot(existingConf.getDiscordToken(), existingConf.getDiscordChannelId());
+		
+		// Security
+		existingConf = encryptSale(this.key, existingConf);
+		
 		// Save
 		salePagingRepository.save(existingConf);
 	}
