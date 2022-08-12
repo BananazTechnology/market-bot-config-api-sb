@@ -101,6 +101,7 @@ public class ListingsService {
 		if(nonNull(listing.getTwitterApiKeySecret())) 	   existingConf.setTwitterApiKeySecret(listing.getTwitterApiKeySecret());
 		if(nonNull(listing.getTwitterAccessToken()))  	   existingConf.setTwitterAccessToken(listing.getTwitterAccessToken());
 		if(nonNull(listing.getTwitterAccessTokenSecret())) existingConf.setTwitterAccessTokenSecret(listing.getTwitterAccessTokenSecret());
+		if(nonNull(listing.getTwitterMessageTemplate()))   existingConf.setTwitterMessageTemplate(listing.getTwitterMessageTemplate());
 		if(nonNull(listing.getShowBundles())) 	  		   existingConf.setShowBundles(listing.getShowBundles());
 		if(nonNull(listing.getSolanaOnOpensea()))  	   	   existingConf.setSolanaOnOpensea(listing.getSolanaOnOpensea());
 		if(nonNull(listing.getExcludeDiscord()))   		   existingConf.setExcludeDiscord(listing.getExcludeDiscord());

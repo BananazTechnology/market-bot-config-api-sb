@@ -102,6 +102,7 @@ public class SalesService {
 		if(nonNull(sale.getTwitterApiKeySecret())) 	   	existingConf.setTwitterApiKeySecret(sale.getTwitterApiKeySecret());
 		if(nonNull(sale.getTwitterAccessToken()))  	   	existingConf.setTwitterAccessToken(sale.getTwitterAccessToken());
 		if(nonNull(sale.getTwitterAccessTokenSecret())) existingConf.setTwitterAccessTokenSecret(sale.getTwitterAccessTokenSecret());
+		if(nonNull(sale.getTwitterMessageTemplate()))   existingConf.setTwitterMessageTemplate(sale.getTwitterMessageTemplate());
 		if(nonNull(sale.getShowBundles())) 	  		   	existingConf.setShowBundles(sale.getShowBundles());
 		if(nonNull(sale.getExcludeDiscord()))   		existingConf.setExcludeDiscord(sale.getExcludeDiscord());
 		if(nonNull(sale.getExcludeTwitter()))   		existingConf.setExcludeTwitter(sale.getExcludeTwitter());
