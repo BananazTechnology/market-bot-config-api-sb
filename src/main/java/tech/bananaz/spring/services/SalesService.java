@@ -43,8 +43,11 @@ public class SalesService {
 		if(isNull(sale.getBurnWatcher())) 	  	 sale.setBurnWatcher(false);
 		if(isNull(sale.getMintWatcher())) 	  	 sale.setMintWatcher(false);
 		if(isNull(sale.getSolanaOnOpensea())) 	 sale.setSolanaOnOpensea(false);
-		// If SOL then address is always a slug
+		if(isNull(sale.getPolygonOnOpensea())) 	 sale.setPolygonOnOpensea(false);
+		
+		// If SOL or POLY then address is always a slug
 		if(sale.getSolanaOnOpensea())			 sale.setIsSlug(true);
+		if(sale.getPolygonOnOpensea())			 sale.setIsSlug(true);
 		
 		// Validate Access
 		if(nonNull(sale.getDiscordToken()) && nonNull(sale.getDiscordChannelId()))
@@ -99,6 +102,7 @@ public class SalesService {
 		if(nonNull(sale.getTwitterApiKeySecret())) 	   	existingConf.setTwitterApiKeySecret(sale.getTwitterApiKeySecret());
 		if(nonNull(sale.getTwitterAccessToken()))  	   	existingConf.setTwitterAccessToken(sale.getTwitterAccessToken());
 		if(nonNull(sale.getTwitterAccessTokenSecret())) existingConf.setTwitterAccessTokenSecret(sale.getTwitterAccessTokenSecret());
+		if(nonNull(sale.getTwitterMessageTemplate()))   existingConf.setTwitterMessageTemplate(sale.getTwitterMessageTemplate());
 		if(nonNull(sale.getShowBundles())) 	  		   	existingConf.setShowBundles(sale.getShowBundles());
 		if(nonNull(sale.getExcludeDiscord()))   		existingConf.setExcludeDiscord(sale.getExcludeDiscord());
 		if(nonNull(sale.getExcludeTwitter()))   		existingConf.setExcludeTwitter(sale.getExcludeTwitter());
@@ -106,7 +110,13 @@ public class SalesService {
 		if(nonNull(sale.getExcludeOpensea()))   		existingConf.setExcludeOpensea(sale.getExcludeOpensea());
 		if(nonNull(sale.getBurnWatcher())) 	  			existingConf.setBurnWatcher(sale.getBurnWatcher());
 		if(nonNull(sale.getMintWatcher())) 	  			existingConf.setMintWatcher(sale.getMintWatcher());
+		if(nonNull(sale.getSolanaOnOpensea())) 	  		existingConf.setSolanaOnOpensea(sale.getSolanaOnOpensea());
+		if(nonNull(sale.getPolygonOnOpensea())) 	  	existingConf.setPolygonOnOpensea(sale.getPolygonOnOpensea());
 		if(nonNull(sale.getActive())) 		   		    existingConf.setActive(sale.getActive());
+		
+		// If SOL or POLY then address is always a slug
+		if(sale.getSolanaOnOpensea())			 		existingConf.setIsSlug(true);
+		if(sale.getPolygonOnOpensea())			 		existingConf.setIsSlug(true);
 		
 		// Validate Access
 		if(nonNull(existingConf.getDiscordToken()) && nonNull(existingConf.getDiscordChannelId()))
