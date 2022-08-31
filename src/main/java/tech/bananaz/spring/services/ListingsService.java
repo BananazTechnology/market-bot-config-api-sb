@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tech.bananaz.spring.discord.DiscordBot;
+import tech.bananaz.enums.RarityEngine;
 import tech.bananaz.exceptions.ResourceNotFoundException;
 import tech.bananaz.models.Listing;
 import tech.bananaz.repositories.ListingConfigPagingRepository;
@@ -34,7 +35,7 @@ public class ListingsService {
 	public URI createListings(HttpServletRequest request, Listing listing) throws Exception {
 		// Set defaults
 		if(isNull(listing.getActive())) 		  	 listing.setActive(true);
-		if(isNull(listing.getAutoRarity())) 	  	 listing.setAutoRarity(false);
+		if(isNull(listing.getRarityEngine()))		 listing.setRarityEngine(RarityEngine.NONE);
 		if(isNull(listing.getIsSlug()))   	 		 listing.setIsSlug(false);
 		if(isNull(listing.getExcludeDiscord()))   	 listing.setExcludeDiscord(false);
 		if(isNull(listing.getExcludeTwitter()))   	 listing.setExcludeTwitter(false);
@@ -93,6 +94,7 @@ public class ListingsService {
 		// Update provided
 		if(nonNull(listing.getContractAddress())) 	 	   existingConf.setContractAddress(listing.getContractAddress());
 		if(nonNull(listing.getInterval())) 		  	  	   existingConf.setInterval(listing.getInterval());
+		if(nonNull(listing.getRarityEngine()))			   existingConf.setRarityEngine(listing.getRarityEngine());
 		if(nonNull(listing.getDiscordMessageColor())) 	   existingConf.setDiscordMessageColor(listing.getDiscordMessageColor());
 		if(nonNull(listing.getDiscordServerId())) 	  	   existingConf.setDiscordServerId(listing.getDiscordServerId());
 		if(nonNull(listing.getDiscordChannelId())) 	  	   existingConf.setDiscordChannelId(listing.getDiscordChannelId());
