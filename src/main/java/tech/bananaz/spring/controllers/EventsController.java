@@ -29,7 +29,8 @@ public class EventsController {
 									@RequestParam Optional<MarketPlace> market,
 									@RequestParam Optional<Boolean>     consumed,
 									@RequestParam Optional<Integer>     quantity,
-									@RequestParam Optional<Integer>     configId) {
+									@RequestParam Optional<Integer>     configId,
+									@RequestParam Optional<String>		contractAddress) {
 		
 		// Build default sorting and filtering options
 		int getPage = (page.isPresent()) ? page.get() : 0;
@@ -49,6 +50,8 @@ public class EventsController {
 			eSpec.addSearchCriteria(new EventSearchCriteria("quantity", quantity.get(), Operation.EQUAL));
 		if(configId.isPresent()) 
 			eSpec.addSearchCriteria(new EventSearchCriteria("configId", configId.get(), Operation.EQUAL));
+		if(contractAddress.isPresent()) 
+			eSpec.addSearchCriteria(new EventSearchCriteria("contractAddress", contractAddress.get(), Operation.EQUAL));
 		
 		return ResponseEntity.ok(eventsService.readAllEvents(pageOptions, eSpec));
 	}
