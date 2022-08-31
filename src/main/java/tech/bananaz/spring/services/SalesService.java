@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tech.bananaz.spring.discord.DiscordBot;
+import tech.bananaz.enums.RarityEngine;
 import tech.bananaz.exceptions.ResourceNotFoundException;
 import tech.bananaz.models.Sale;
 import tech.bananaz.repositories.SaleConfigPagingRepository;
@@ -33,7 +34,7 @@ public class SalesService {
 	public URI createSales(HttpServletRequest request, Sale sale) throws Exception {
 		// Set defaults
 		if(isNull(sale.getActive())) 		  	 sale.setActive(true);
-		if(isNull(sale.getAutoRarity())) 	  	 sale.setAutoRarity(false);
+		if(isNull(sale.getRarityEngine()))	 sale.setRarityEngine(RarityEngine.NONE);
 		if(isNull(sale.getIsSlug()))   	 		 sale.setIsSlug(false);
 		if(isNull(sale.getExcludeDiscord()))   	 sale.setExcludeDiscord(false);
 		if(isNull(sale.getExcludeTwitter()))   	 sale.setExcludeTwitter(false);
@@ -94,6 +95,7 @@ public class SalesService {
 		// Update provided
 		if(nonNull(sale.getContractAddress())) 	 	    existingConf.setContractAddress(sale.getContractAddress());
 		if(nonNull(sale.getInterval())) 		  	    existingConf.setInterval(sale.getInterval());
+		if(nonNull(sale.getRarityEngine()))			existingConf.setRarityEngine(sale.getRarityEngine());
 		if(nonNull(sale.getDiscordMessageColor())) 	    existingConf.setDiscordMessageColor(sale.getDiscordMessageColor());
 		if(nonNull(sale.getDiscordServerId())) 	  	    existingConf.setDiscordServerId(sale.getDiscordServerId());
 		if(nonNull(sale.getDiscordChannelId())) 	    existingConf.setDiscordChannelId(sale.getDiscordChannelId());
