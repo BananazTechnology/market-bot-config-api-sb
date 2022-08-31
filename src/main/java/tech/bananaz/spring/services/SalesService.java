@@ -34,7 +34,7 @@ public class SalesService {
 	public URI createSales(HttpServletRequest request, Sale sale) throws Exception {
 		// Set defaults
 		if(isNull(sale.getActive())) 		  	 sale.setActive(true);
-		if(isNull(sale.getRarityEngine()))	 sale.setRarityEngine(RarityEngine.NONE);
+		if(isNull(sale.getRarityEngine()))	 	 sale.setRarityEngine(RarityEngine.NONE);
 		if(isNull(sale.getIsSlug()))   	 		 sale.setIsSlug(false);
 		if(isNull(sale.getExcludeDiscord()))   	 sale.setExcludeDiscord(false);
 		if(isNull(sale.getExcludeTwitter()))   	 sale.setExcludeTwitter(false);
@@ -123,8 +123,11 @@ public class SalesService {
 			if(sale.getPolygonOnOpensea())			 	existingConf.setIsSlug(true);
 		
 		// Validate Access
-		if(nonNull(existingConf.getDiscordToken()) && nonNull(existingConf.getDiscordChannelId()))
-			new DiscordBot(existingConf.getDiscordToken(), existingConf.getDiscordChannelId());
+		if(nonNull(sale.getDiscordToken()) || nonNull(sale.getDiscordChannelId())) {
+			String discordToken = (nonNull(sale.getDiscordToken()))? sale.getDiscordToken() : existingConf.getDiscordToken();
+			String discordChannel = (nonNull(sale.getDiscordChannelId())) ? sale.getDiscordChannelId() : existingConf.getDiscordChannelId();
+			new DiscordBot(discordToken, discordChannel);
+		}
 		
 		// Security
 		existingConf = encryptSale(this.key, existingConf);

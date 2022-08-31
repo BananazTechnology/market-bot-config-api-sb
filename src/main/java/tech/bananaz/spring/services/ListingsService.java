@@ -121,8 +121,11 @@ public class ListingsService {
 			if(listing.getPolygonOnOpensea())			   existingConf.setIsSlug(true);
 		
 		// Validate Access
-		if(nonNull(existingConf.getDiscordToken()) && nonNull(existingConf.getDiscordChannelId()))
-			new DiscordBot(existingConf.getDiscordToken(), existingConf.getDiscordChannelId());
+		if(nonNull(listing.getDiscordToken()) || nonNull(listing.getDiscordChannelId())) {
+			String discordToken = (nonNull(listing.getDiscordToken()))? listing.getDiscordToken() : existingConf.getDiscordToken();
+			String discordChannel = (nonNull(listing.getDiscordChannelId())) ? listing.getDiscordChannelId() : existingConf.getDiscordChannelId();
+			new DiscordBot(discordToken, discordChannel);
+		}
 		
 		// Security
 		existingConf = encryptListing(this.key, existingConf);

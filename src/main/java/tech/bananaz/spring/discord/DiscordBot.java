@@ -9,12 +9,11 @@ import org.javacord.api.entity.permission.Permissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tech.bananaz.exceptions.BadRequestException;
-import tech.bananaz.exceptions.InternalServerError;
 
 public class DiscordBot {
 	
 	// Errors
-	private String SERVER_ERROR = "Failed discord starting bot! Exception: %s";
+	private String SERVER_ERROR = "Failed discord login or connection! Ensure you have provided a proper token and channel";
 	private String NOT_IN_CHANNEL = "Your bot is not part of a channel with id or name of %s, try inviting it with %s";
 	private String BOUNDS_CHANNEL = "The selected channel with id or name of %s has to many matches";
 	private String CANNOT_ACCESS_CHANNEL = "Your bot cannot see or write the channel with id or name of %s";
@@ -32,7 +31,7 @@ public class DiscordBot {
 	        // End
 		} catch (Exception e) {
 			LOGGER.error(String.format(SERVER_ERROR, e.getMessage()));
-        	throw new InternalServerError(String.format(SERVER_ERROR, e.getMessage()));
+        	throw new BadRequestException(String.format(SERVER_ERROR, e.getMessage()));
 		}
 		//Now that we know the bot is created
         String inviteLink = bot.createBotInvite(Permissions.fromBitmask(19520));
