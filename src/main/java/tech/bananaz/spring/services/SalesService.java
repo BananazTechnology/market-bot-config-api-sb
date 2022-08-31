@@ -117,8 +117,10 @@ public class SalesService {
 		if(nonNull(sale.getActive())) 		   		    existingConf.setActive(sale.getActive());
 		
 		// If SOL or POLY then address is always a slug
-		if(sale.getSolanaOnOpensea())			 		existingConf.setIsSlug(true);
-		if(sale.getPolygonOnOpensea())			 		existingConf.setIsSlug(true);
+		if(nonNull(sale.getSolanaOnOpensea()))
+			if(sale.getSolanaOnOpensea())				existingConf.setIsSlug(true);
+		if(nonNull(sale.getPolygonOnOpensea()))
+			if(sale.getPolygonOnOpensea())			 	existingConf.setIsSlug(true);
 		
 		// Validate Access
 		if(nonNull(existingConf.getDiscordToken()) && nonNull(existingConf.getDiscordChannelId()))

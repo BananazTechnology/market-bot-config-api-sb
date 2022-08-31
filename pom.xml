@@ -11,7 +11,7 @@
 	
 	<groupId>tech.bananaz</groupId>
 	<artifactId>market-bot-config-api-sb</artifactId>
-	<version>5.7.1</version>
+	<version>5.7.2</version>
 	<name>market-bot-config-api-sb</name>
 	<description>A @spring-projects framework project which has CRUD functionality to @mysql</description>
 	
