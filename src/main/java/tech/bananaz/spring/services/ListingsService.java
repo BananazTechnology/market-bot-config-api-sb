@@ -6,11 +6,14 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import tech.bananaz.spring.discord.DiscordBot;
+
 import tech.bananaz.enums.RarityEngine;
 import tech.bananaz.exceptions.ResourceNotFoundException;
 import tech.bananaz.models.Listing;
 import tech.bananaz.repositories.ListingConfigPagingRepository;
+import tech.bananaz.spring.discord.DiscordBot;
+import tech.bananaz.spring.twitter.TwitterBot;
+
 import java.net.URI;
 import javax.servlet.http.HttpServletRequest;
 import static java.util.Objects.isNull;
@@ -52,6 +55,14 @@ public class ListingsService {
 		// Validate Access
 		if(nonNull(listing.getDiscordToken()) && nonNull(listing.getDiscordChannelId()))
 			new DiscordBot(listing.getDiscordToken(), listing.getDiscordChannelId());
+		
+		// Validate Twitter Access
+		if(nonNull(listing.getTwitterApiKey()) || 
+			nonNull(listing.getTwitterApiKeySecret()) || 
+			nonNull(listing.getTwitterAccessToken()) ||
+			nonNull(listing.getTwitterAccessTokenSecret())) {
+			new TwitterBot(listing.getTwitterAccessToken(), listing.getTwitterAccessTokenSecret(), listing.getTwitterApiKey(), listing.getTwitterApiKeySecret());
+		}
 		
 		// Security
 		listing = encryptListing(this.key, listing);
@@ -125,6 +136,19 @@ public class ListingsService {
 			String discordToken = (nonNull(listing.getDiscordToken()))? listing.getDiscordToken() : existingConf.getDiscordToken();
 			String discordChannel = (nonNull(listing.getDiscordChannelId())) ? listing.getDiscordChannelId() : existingConf.getDiscordChannelId();
 			new DiscordBot(discordToken, discordChannel);
+		}
+		
+		// Validate Twitter Access
+		if(nonNull(listing.getTwitterApiKey()) || 
+			nonNull(listing.getTwitterApiKeySecret()) || 
+			nonNull(listing.getTwitterAccessToken()) ||
+			nonNull(listing.getTwitterAccessTokenSecret())) {
+			
+			String apiKey = (nonNull(listing.getTwitterApiKey()))? listing.getTwitterApiKey() : existingConf.getTwitterApiKey();
+			String apiKeySecret = (nonNull(listing.getTwitterApiKeySecret())) ? listing.getTwitterApiKeySecret() : existingConf.getTwitterApiKeySecret();
+			String accessToken = (nonNull(listing.getTwitterAccessToken())) ? listing.getTwitterAccessToken() : existingConf.getTwitterAccessToken();
+			String accessTokenSecret = (nonNull(listing.getTwitterAccessTokenSecret())) ? listing.getTwitterAccessTokenSecret() : existingConf.getTwitterAccessTokenSecret();
+			new TwitterBot(accessToken, accessTokenSecret, apiKey, apiKeySecret);
 		}
 		
 		// Security
