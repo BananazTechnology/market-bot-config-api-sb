@@ -6,11 +6,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import tech.bananaz.spring.discord.DiscordBot;
 import tech.bananaz.enums.RarityEngine;
 import tech.bananaz.exceptions.ResourceNotFoundException;
 import tech.bananaz.models.Sale;
 import tech.bananaz.repositories.SaleConfigPagingRepository;
+import tech.bananaz.spring.discord.DiscordBot;
+import tech.bananaz.spring.twitter.TwitterBot;
 import java.net.URI;
 import javax.servlet.http.HttpServletRequest;
 import static java.util.Objects.isNull;
@@ -53,6 +54,14 @@ public class SalesService {
 		// Validate Access
 		if(nonNull(sale.getDiscordToken()) && nonNull(sale.getDiscordChannelId()))
 			new DiscordBot(sale.getDiscordToken(), sale.getDiscordChannelId());
+		
+		// Validate Twitter Access
+		if(nonNull(sale.getTwitterApiKey()) || 
+			nonNull(sale.getTwitterApiKeySecret()) || 
+			nonNull(sale.getTwitterAccessToken()) ||
+			nonNull(sale.getTwitterAccessTokenSecret())) {
+			new TwitterBot(sale.getTwitterAccessToken(), sale.getTwitterAccessTokenSecret(), sale.getTwitterApiKey(), sale.getTwitterApiKeySecret());
+		}
 		
 		// Security
 		sale = encryptSale(this.key, sale);
@@ -122,11 +131,24 @@ public class SalesService {
 		if(nonNull(sale.getPolygonOnOpensea()))
 			if(sale.getPolygonOnOpensea())			 	existingConf.setIsSlug(true);
 		
-		// Validate Access
+		// Validate Discord Access
 		if(nonNull(sale.getDiscordToken()) || nonNull(sale.getDiscordChannelId())) {
 			String discordToken = (nonNull(sale.getDiscordToken()))? sale.getDiscordToken() : existingConf.getDiscordToken();
 			String discordChannel = (nonNull(sale.getDiscordChannelId())) ? sale.getDiscordChannelId() : existingConf.getDiscordChannelId();
 			new DiscordBot(discordToken, discordChannel);
+		}
+		
+		// Validate Twitter Access
+		if(nonNull(sale.getTwitterApiKey()) || 
+			nonNull(sale.getTwitterApiKeySecret()) || 
+			nonNull(sale.getTwitterAccessToken()) ||
+			nonNull(sale.getTwitterAccessTokenSecret())) {
+			
+			String apiKey = (nonNull(sale.getTwitterApiKey()))? sale.getTwitterApiKey() : existingConf.getTwitterApiKey();
+			String apiKeySecret = (nonNull(sale.getTwitterApiKeySecret())) ? sale.getTwitterApiKeySecret() : existingConf.getTwitterApiKeySecret();
+			String accessToken = (nonNull(sale.getTwitterAccessToken())) ? sale.getTwitterAccessToken() : existingConf.getTwitterAccessToken();
+			String accessTokenSecret = (nonNull(sale.getTwitterAccessTokenSecret())) ? sale.getTwitterAccessTokenSecret() : existingConf.getTwitterAccessTokenSecret();
+			new TwitterBot(accessToken, accessTokenSecret, apiKey, apiKeySecret);
 		}
 		
 		// Security
