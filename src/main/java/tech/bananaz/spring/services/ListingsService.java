@@ -121,6 +121,7 @@ public class ListingsService {
 		if(nonNull(listing.getExcludeTwitter()))   		   existingConf.setExcludeTwitter(listing.getExcludeTwitter());
 		if(nonNull(listing.getExcludeLooksrare())) 		   existingConf.setExcludeLooksrare(listing.getExcludeLooksrare());
 		if(nonNull(listing.getExcludeOpensea()))   		   existingConf.setExcludeOpensea(listing.getExcludeOpensea());
+		if(nonNull(listing.getIsSlug())) 	  			   existingConf.setIsSlug(listing.getIsSlug());
 		if(nonNull(listing.getSolanaOnOpensea())) 	  	   existingConf.setSolanaOnOpensea(listing.getSolanaOnOpensea());
 		if(nonNull(listing.getPolygonOnOpensea())) 	  	   existingConf.setPolygonOnOpensea(listing.getPolygonOnOpensea());
 		if(nonNull(listing.getActive())) 		   		   existingConf.setActive(listing.getActive());
