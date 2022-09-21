@@ -42,8 +42,6 @@ public class SalesService {
 		if(isNull(sale.getExcludeLooksrare())) 	 sale.setExcludeLooksrare(false);
 		if(isNull(sale.getExcludeOpensea()))   	 sale.setExcludeOpensea(false);
 		if(isNull(sale.getShowBundles())) 	  	 sale.setShowBundles(true);
-		if(isNull(sale.getBurnWatcher())) 	  	 sale.setBurnWatcher(false);
-		if(isNull(sale.getMintWatcher())) 	  	 sale.setMintWatcher(false);
 		if(isNull(sale.getSolanaOnOpensea())) 	 sale.setSolanaOnOpensea(false);
 		if(isNull(sale.getPolygonOnOpensea())) 	 sale.setPolygonOnOpensea(false);
 		
@@ -104,7 +102,7 @@ public class SalesService {
 		// Update provided
 		if(nonNull(sale.getContractAddress())) 	 	    existingConf.setContractAddress(sale.getContractAddress());
 		if(nonNull(sale.getInterval())) 		  	    existingConf.setInterval(sale.getInterval());
-		if(nonNull(sale.getRarityEngine()))			existingConf.setRarityEngine(sale.getRarityEngine());
+		if(nonNull(sale.getRarityEngine()))			    existingConf.setRarityEngine(sale.getRarityEngine());
 		if(nonNull(sale.getDiscordMessageColor())) 	    existingConf.setDiscordMessageColor(sale.getDiscordMessageColor());
 		if(nonNull(sale.getDiscordServerId())) 	  	    existingConf.setDiscordServerId(sale.getDiscordServerId());
 		if(nonNull(sale.getDiscordChannelId())) 	    existingConf.setDiscordChannelId(sale.getDiscordChannelId());
@@ -119,8 +117,7 @@ public class SalesService {
 		if(nonNull(sale.getExcludeTwitter()))   		existingConf.setExcludeTwitter(sale.getExcludeTwitter());
 		if(nonNull(sale.getExcludeLooksrare())) 		existingConf.setExcludeLooksrare(sale.getExcludeLooksrare());
 		if(nonNull(sale.getExcludeOpensea()))   		existingConf.setExcludeOpensea(sale.getExcludeOpensea());
-		if(nonNull(sale.getBurnWatcher())) 	  			existingConf.setBurnWatcher(sale.getBurnWatcher());
-		if(nonNull(sale.getMintWatcher())) 	  			existingConf.setMintWatcher(sale.getMintWatcher());
+		if(nonNull(sale.getIsSlug())) 	  			    existingConf.setIsSlug(sale.getIsSlug());
 		if(nonNull(sale.getSolanaOnOpensea())) 	  		existingConf.setSolanaOnOpensea(sale.getSolanaOnOpensea());
 		if(nonNull(sale.getPolygonOnOpensea())) 	  	existingConf.setPolygonOnOpensea(sale.getPolygonOnOpensea());
 		if(nonNull(sale.getActive())) 		   		    existingConf.setActive(sale.getActive());
